@@ -1,1538 +1,856 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl">
+<html lang="ckb" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C-Star Coffee — هەولێر</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-  /* ===== VARIABLES ===== */
-  :root {
-    --espresso: #0d0500;
-    --dark: #1a0a00;
-    --roast: #2c1503;
-    --mocha: #4a2308;
-    --caramel: #8b4513;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --cream: #f5e6d3;
-    --milk: #fdf6ee;
-    --white: #ffffff;
-    --text-muted: #a08060;
-    --font-en: 'Playfair Display', serif;
-    --font-ku: 'Tajawal', sans-serif;
-    --radius: 16px;
-    --shadow: 0 8px 40px rgba(0,0,0,0.5);
-    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-Star Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ── Variables ─────────────────────────────────── */
+    :root {
+      --bg:       #0c0804;
+      --bg2:      #160e08;
+      --bg3:      #1e1409;
+      --gold:     #c8913a;
+      --gold-lt:  #e8b85c;
+      --gold-pale:#f5d89b;
+      --cream:    #f5ede0;
+      --text:     #ddc9a8;
+      --muted:    #8a7060;
+      --card:     #1a100a;
+      --border:   rgba(200,145,58,.18);
+      --r:        16px;
+      --nav:      70px;
+      --tr:       0.32s cubic-bezier(.4,0,.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans','Noto Sans Arabic',sans-serif;overflow-x:hidden;min-height:100vh;line-height:1.65}
+    body.lang-ar,body.lang-ku{font-family:'Noto Sans Arabic',sans-serif}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;border:none;background:none;font-family:inherit}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:var(--bg2)}
+    ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
 
-  /* ===== RESET ===== */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--font-ku);
-    background: var(--espresso);
-    color: var(--cream);
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-  img { max-width: 100%; display: block; }
-  a { text-decoration: none; color: inherit; }
+    /* ── Noise texture overlay ─────────────────────── */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity:.4;
+    }
+    section,nav,footer{position:relative;z-index:1}
 
-  /* ===== LANGUAGE TOGGLE ===== */
-  .lang-toggle {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 1000;
-    display: flex;
-    gap: 6px;
-  }
-  .lang-btn {
-    padding: 6px 14px;
-    border: 1px solid var(--gold);
-    background: transparent;
-    color: var(--gold);
-    border-radius: 50px;
-    font-family: var(--font-ku);
-    font-size: 13px;
-    cursor: pointer;
-    transition: var(--transition);
-  }
-  .lang-btn.active, .lang-btn:hover {
-    background: var(--gold);
-    color: var(--espresso);
-  }
+    /* ── Navigation ────────────────────────────────── */
+    #nav{
+      position:fixed;top:0;inset-inline-start:0;inset-inline-end:0;z-index:999;
+      height:var(--nav);
+      background:rgba(12,8,4,.8);
+      backdrop-filter:blur(24px) saturate(1.6);
+      border-bottom:1px solid var(--border);
+      transition:background var(--tr);
+    }
+    #nav.solid{background:rgba(12,8,4,.98)}
+    .nav-wrap{
+      max-width:1220px;margin:0 auto;height:100%;
+      padding:0 24px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .nav-logo{height:46px;width:46px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(200,145,58,.55))}
+    .nav-links{display:flex;list-style:none;gap:4px}
+    .nav-links a{
+      padding:7px 15px;border-radius:9px;
+      font-size:.875rem;font-weight:500;color:var(--muted);
+      transition:color var(--tr),background var(--tr);
+    }
+    .nav-links a:hover{color:var(--gold-lt);background:rgba(200,145,58,.08)}
+    .nav-right{display:flex;align-items:center;gap:12px}
 
-  /* ===== NAVBAR ===== */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 900;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to bottom, rgba(13,5,0,0.95), transparent);
-    backdrop-filter: blur(2px);
-  }
-  .nav-logo {
-    font-family: var(--font-en);
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--gold);
-    letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(201,168,76,0.4);
-  }
-  .nav-logo span { color: var(--cream); }
+    /* lang switcher */
+    .lang-sw{
+      display:flex;background:rgba(255,255,255,.04);
+      border:1px solid var(--border);border-radius:10px;overflow:hidden;
+    }
+    .lang-btn{
+      padding:6px 13px;font-size:.75rem;font-weight:700;
+      color:var(--muted);letter-spacing:.04em;transition:all var(--tr);
+    }
+    .lang-btn.on{background:var(--gold);color:#0c0804}
+    .lang-btn:not(.on):hover{background:rgba(200,145,58,.14);color:var(--gold-lt)}
 
-  /* ===== HERO ===== */
-  .hero {
-    position: relative;
-    height: 100vh;
-    min-height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 30% 60%, rgba(139,69,19,0.3) 0%, transparent 60%),
-      radial-gradient(ellipse at 70% 20%, rgba(201,168,76,0.15) 0%, transparent 50%),
-      linear-gradient(135deg, #0d0500 0%, #2c1503 40%, #1a0a00 100%);
-  }
-  /* Coffee cup decorative circles */
-  .hero-bg::before {
-    content: '';
-    position: absolute;
-    width: 500px; height: 500px;
-    border: 1px solid rgba(201,168,76,0.1);
-    border-radius: 50%;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    width: 350px; height: 350px;
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 50%;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  /* HERO IMAGE: Replace src below with your own photo */
-  .hero-img {
-    position: absolute;
-    inset: 0;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    opacity: 0.25;
-    /* Remove this display:none once you add a real image */
-    display: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
-    animation: fadeUp 1s ease both;
-  }
-  .hero-badge {
-    display: inline-block;
-    padding: 6px 20px;
-    border: 1px solid var(--gold);
-    border-radius: 50px;
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    animation: fadeUp 1s 0.2s ease both;
-  }
-  .hero-title {
-    font-family: var(--font-en);
-    font-size: clamp(3rem, 10vw, 7rem);
-    font-weight: 900;
-    line-height: 1;
-    color: var(--white);
-    margin-bottom: 8px;
-    animation: fadeUp 1s 0.3s ease both;
-  }
-  .hero-title .star { color: var(--gold); }
-  .hero-subtitle-ku {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    color: var(--gold-light);
-    font-weight: 300;
-    margin-bottom: 24px;
-    animation: fadeUp 1s 0.4s ease both;
-  }
-  .hero-subtitle-en {
-    font-family: var(--font-en);
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-    color: var(--text-muted);
-    font-style: italic;
-    margin-bottom: 40px;
-    animation: fadeUp 1s 0.5s ease both;
-  }
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 36px;
-    background: var(--gold);
-    color: var(--espresso);
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1rem;
-    transition: var(--transition);
-    animation: fadeUp 1s 0.6s ease both;
-    box-shadow: 0 4px 30px rgba(201,168,76,0.4);
-  }
-  .hero-cta:hover {
-    background: var(--gold-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 40px rgba(201,168,76,0.5);
-  }
-  .hero-scroll {
-    position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--text-muted);
-    font-size: 12px;
-    letter-spacing: 2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    animation: bounce 2s infinite;
-  }
-  .hero-scroll::after {
-    content: '';
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-  }
+    /* hamburger */
+    .ham{display:none;flex-direction:column;gap:5px;padding:8px;border-radius:8px;transition:background var(--tr)}
+    .ham:hover{background:rgba(200,145,58,.08)}
+    .ham span{width:24px;height:2px;background:var(--gold-lt);border-radius:2px;transition:all var(--tr);display:block}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-  /* ===== INFO BAR ===== */
-  .info-bar {
-    background: var(--roast);
-    border-top: 1px solid rgba(201,168,76,0.2);
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-    padding: 20px 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
-  }
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
-    color: var(--cream);
-  }
-  .info-icon {
-    width: 36px; height: 36px;
-    background: rgba(201,168,76,0.15);
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-  .info-label { color: var(--text-muted); font-size: 11px; display: block; }
-  .info-value { font-weight: 600; color: var(--cream); }
+    /* mobile nav */
+    .mob-nav{
+      display:none;flex-direction:column;
+      position:fixed;top:var(--nav);inset-inline-start:0;inset-inline-end:0;z-index:998;
+      background:rgba(12,8,4,.97);backdrop-filter:blur(24px);
+      border-bottom:1px solid var(--border);
+      padding:16px 24px 20px;gap:4px;
+    }
+    .mob-nav.open{display:flex}
+    .mob-nav a{
+      padding:13px 16px;border-radius:10px;
+      color:var(--muted);font-size:1rem;font-weight:500;
+      transition:all var(--tr);
+    }
+    .mob-nav a:hover{color:var(--gold-lt);background:rgba(200,145,58,.08)}
 
-  /* ===== SECTIONS ===== */
-  section { padding: 80px 24px; }
-  .section-header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .section-tag {
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-    display: block;
-  }
-  .section-title {
-    font-family: var(--font-en);
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-  }
-  .section-title-ku {
-    font-size: clamp(1.4rem, 3.5vw, 2rem);
-    color: var(--cream);
-    font-weight: 500;
-    margin-top: 6px;
-  }
-  .section-line {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-    margin: 20px auto 0;
-  }
+    /* ── Hero ──────────────────────────────────────── */
+    #hero{
+      position:relative;min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .hero-bg{
+      position:absolute;inset:0;
+      background:url('https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true') center/cover no-repeat;
+      transform:scale(1.12);will-change:transform;
+    }
+    .hero-veil{
+      position:absolute;inset:0;
+      background:linear-gradient(150deg,rgba(12,8,4,.9) 0%,rgba(12,8,4,.55) 55%,rgba(12,8,4,.82) 100%);
+    }
+    .hero-veil2{
+      position:absolute;inset:0;
+      background:radial-gradient(ellipse 80% 70% at 50% 120%,rgba(200,145,58,.08) 0%,transparent 70%);
+    }
+    .hero-content{
+      position:relative;z-index:2;text-align:center;
+      max-width:720px;padding:0 24px;
+      animation:heroUp 1.1s ease both;
+    }
+    @keyframes heroUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+    .hero-pill{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(200,145,58,.12);border:1px solid rgba(200,145,58,.35);
+      color:var(--gold-lt);padding:7px 20px;border-radius:30px;
+      font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      margin-bottom:22px;animation:heroUp 1.1s .15s ease both;
+    }
+    .hero-logo{
+      width:96px;height:96px;object-fit:contain;margin:0 auto 22px;
+      filter:drop-shadow(0 6px 24px rgba(200,145,58,.6));
+      animation:float 3.5s ease-in-out infinite,heroUp 1s .05s both;
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    h1.hero-title{
+      font-family:'Playfair Display',Georgia,serif;
+      font-size:clamp(2.6rem,7vw,5rem);font-weight:900;
+      color:var(--cream);line-height:1.08;margin-bottom:18px;
+      animation:heroUp 1.1s .2s ease both;
+      letter-spacing:-.02em;
+    }
+    h1.hero-title em{color:var(--gold);font-style:normal}
+    .hero-sub{
+      font-size:1.05rem;color:rgba(245,237,224,.72);
+      max-width:480px;margin:0 auto 38px;line-height:1.75;
+      animation:heroUp 1.1s .3s ease both;
+    }
+    .hero-btns{
+      display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+      animation:heroUp 1.1s .4s ease both;
+    }
+    .btn-gold{
+      padding:14px 30px;
+      background:linear-gradient(135deg,var(--gold) 0%,#a86e22 100%);
+      color:#0c0804;font-weight:700;font-size:.93rem;border-radius:12px;
+      box-shadow:0 4px 22px rgba(200,145,58,.38);
+      transition:all var(--tr);display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn-gold:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(200,145,58,.55)}
+    .btn-ghost{
+      padding:14px 30px;
+      border:1.5px solid rgba(200,145,58,.45);
+      color:var(--gold-lt);font-weight:600;font-size:.93rem;border-radius:12px;
+      transition:all var(--tr);display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn-ghost:hover{background:rgba(200,145,58,.1);border-color:var(--gold);transform:translateY(-3px)}
+    .hero-scroll{
+      position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      color:var(--muted);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+      animation:scrollPulse 2.2s ease infinite;
+    }
+    @keyframes scrollPulse{0%,100%{transform:translateX(-50%) translateY(0);opacity:.6}50%{transform:translateX(-50%) translateY(7px);opacity:1}}
+    .scroll-arr{width:16px;height:16px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg)}
 
-  /* ===== CATEGORIES ===== */
-  .categories { background: var(--dark); }
-  .cat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 16px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .cat-card {
-    background: var(--roast);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: var(--radius);
-    padding: 24px 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-  }
-  .cat-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
-    opacity: 0;
-    transition: var(--transition);
-  }
-  .cat-card:hover { 
-    border-color: var(--gold);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
-  }
-  .cat-card:hover::before { opacity: 1; }
-  .cat-emoji { font-size: 2rem; margin-bottom: 10px; display: block; }
-  .cat-name { font-size: 0.8rem; font-weight: 600; color: var(--cream); }
-  .cat-name-en { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+    /* ── Section base ──────────────────────────────── */
+    .sec{padding:96px 24px}
+    .sec-in{max-width:1220px;margin:0 auto}
+    .sec-label{font-size:.75rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .sec-title{
+      font-family:'Playfair Display',Georgia,serif;
+      font-size:clamp(1.9rem,4vw,3.2rem);font-weight:800;color:var(--cream);
+      line-height:1.15;margin-bottom:14px;
+    }
+    body.lang-ar .sec-title,body.lang-ku .sec-title{font-family:'Noto Sans Arabic',sans-serif;font-weight:800}
+    .sec-line{width:52px;height:3px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:3px;margin-bottom:28px}
+    [dir="rtl"] .sec-line{background:linear-gradient(270deg,var(--gold),transparent)}
 
-  /* ===== MENU ===== */
-  .menu-section { background: var(--espresso); }
-  .menu-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 48px;
-  }
-  .filter-btn {
-    padding: 8px 20px;
-    border: 1px solid rgba(201,168,76,0.3);
-    background: transparent;
-    color: var(--text-muted);
-    border-radius: 50px;
-    font-family: var(--font-ku);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: var(--transition);
-  }
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--espresso);
-    font-weight: 700;
-  }
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .menu-card {
-    background: var(--roast);
-    border: 1px solid rgba(201,168,76,0.1);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: var(--transition);
-    position: relative;
-  }
-  .menu-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(201,168,76,0.4);
-    box-shadow: var(--shadow);
-  }
-  .menu-card-img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    background: var(--mocha);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .menu-card-img-placeholder {
-    width: 100%;
-    aspect-ratio: 1/1;
-    background: linear-gradient(135deg, var(--mocha), var(--roast));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3.5rem;
-    position: relative;
-  }
-  .menu-card-img-placeholder::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, rgba(13,5,0,0.5));
-  }
-  .menu-card-body { padding: 18px; }
-  .menu-card-cat {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .menu-card-name {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 6px;
-  }
-  .menu-card-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 16px;
-    min-height: 40px;
-  }
-  .menu-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .menu-price {
-    font-family: var(--font-en);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .menu-price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
-  .whatsapp-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: #25D366;
-    color: white;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: var(--transition);
-    border: none;
-    cursor: pointer;
-  }
-  .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+    /* ── About ─────────────────────────────────────── */
+    #about{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+    .about-txt p{color:var(--muted);line-height:1.85;margin-bottom:18px;font-size:1.02rem}
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+    .stat-box{
+      background:rgba(200,145,58,.07);border:1px solid var(--border);
+      border-radius:14px;padding:18px 14px;text-align:center;
+      transition:all var(--tr);
+    }
+    .stat-box:hover{background:rgba(200,145,58,.13);transform:translateY(-3px)}
+    .stat-n{font-size:2rem;font-weight:900;color:var(--gold);font-family:'Playfair Display',serif}
+    .stat-l{font-size:.78rem;color:var(--muted);margin-top:4px}
+    .about-img{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+    .about-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+    .about-img:hover img{transform:scale(1.04)}
+    .about-img::after{content:'';position:absolute;inset:0;border:1.5px solid rgba(200,145,58,.25);border-radius:20px;pointer-events:none}
+    .about-img-badge{
+      position:absolute;bottom:16px;inset-inline-end:16px;
+      background:rgba(12,8,4,.85);backdrop-filter:blur(12px);
+      border:1px solid var(--border);border-radius:10px;
+      padding:10px 14px;display:flex;align-items:center;gap:8px;
+    }
+    .about-stars{color:#f5c518;font-size:.85rem;letter-spacing:2px}
+    .about-rate{font-size:.8rem;font-weight:700;color:var(--cream)}
 
-  /* ===== REVIEWS ===== */
-  .reviews { background: var(--dark); }
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .review-card {
-    background: var(--roast);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: var(--radius);
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
-  }
-  .review-card::before {
-    content: '"';
-    position: absolute;
-    top: -10px; right: 20px;
-    font-family: var(--font-en);
-    font-size: 8rem;
-    color: rgba(201,168,76,0.08);
-    line-height: 1;
-    pointer-events: none;
-  }
-  .review-card:hover { border-color: rgba(201,168,76,0.4); }
-  .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 14px; }
-  .review-text {
-    font-size: 0.95rem;
-    color: var(--cream);
-    line-height: 1.7;
-    margin-bottom: 20px;
-  }
-  .reviewer { display: flex; align-items: center; gap: 12px; }
-  .reviewer-avatar {
-    width: 42px; height: 42px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--caramel));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: var(--espresso);
-    flex-shrink: 0;
-  }
-  .reviewer-name { font-weight: 600; font-size: 0.9rem; color: var(--white); }
-  .reviewer-date { font-size: 0.75rem; color: var(--text-muted); }
+    /* ── Menu ──────────────────────────────────────── */
+    #menu{background:var(--bg)}
+    .menu-head{text-align:center;margin-bottom:52px}
+    .menu-head .sec-line{margin-inline:auto}
 
-  /* ===== CONTACT ===== */
-  .contact { background: var(--espresso); }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    max-width: 900px;
-    margin: 0 auto;
-    align-items: start;
-  }
-  .contact-info { display: flex; flex-direction: column; gap: 24px; }
-  .contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  .contact-icon {
-    width: 48px; height: 48px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .contact-item-label { font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 4px; }
-  .contact-item-value { font-size: 0.95rem; color: var(--cream); }
-  .map-link {
-    display: block;
-    background: var(--roast);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: var(--transition);
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .map-link:hover { border-color: var(--gold); }
-  .map-placeholder { font-size: 3rem; margin-bottom: 12px; }
-  .map-cta-text { color: var(--gold); font-weight: 600; margin-bottom: 6px; }
-  .map-address { color: var(--text-muted); font-size: 0.85rem; }
-  .social-links { display: flex; gap: 12px; margin-top: 24px; }
-  .social-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: var(--transition);
-  }
-  .social-btn.whatsapp { background: #25D366; color: white; }
-  .social-btn.whatsapp:hover { background: #128C7E; }
-  .social-btn.phone { background: var(--gold); color: var(--espresso); }
-  .social-btn.phone:hover { background: var(--gold-light); }
+    /* Talabat bar */
+    .tal-bar{
+      display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+      background:linear-gradient(135deg,rgba(255,102,0,.1),rgba(255,70,0,.06));
+      border:1px solid rgba(255,102,0,.22);border-radius:16px;
+      padding:18px 28px;margin-bottom:48px;
+    }
+    .tal-txt{color:var(--cream);font-size:.98rem;font-weight:500}
+    .btn-tal{
+      padding:10px 24px;
+      background:linear-gradient(135deg,#ff6600,#cc4400);
+      color:#fff;font-weight:700;font-size:.88rem;border-radius:10px;
+      box-shadow:0 4px 16px rgba(255,102,0,.35);
+      transition:all var(--tr);display:inline-flex;align-items:center;gap:7px;
+    }
+    .btn-tal:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,102,0,.5)}
 
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--espresso);
-    border-top: 1px solid rgba(201,168,76,0.15);
-    padding: 40px 24px;
-    text-align: center;
-  }
-  .footer-logo {
-    font-family: var(--font-en);
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .footer-text { color: var(--text-muted); font-size: 0.85rem; }
-  .footer-gold { color: var(--gold); }
+    /* tabs */
+    .tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-bottom:44px}
+    .tab{
+      padding:8px 18px;border-radius:30px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+      color:var(--muted);font-size:.83rem;font-weight:600;
+      transition:all var(--tr);
+    }
+    .tab:hover{border-color:var(--gold);color:var(--gold-lt)}
+    .tab.on{background:var(--gold);border-color:var(--gold);color:#0c0804}
 
-  /* ===== ANIMATIONS ===== */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-8px); }
-  }
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    /* grid */
+    .menu-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+    }
+    .card{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+      overflow:hidden;transition:all var(--tr);cursor:pointer;
+      opacity:0;transform:translateY(18px);
+      animation:cardIn .45s ease forwards;
+    }
+    @keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+    .card:hover{transform:translateY(-7px);border-color:rgba(200,145,58,.5);box-shadow:0 22px 44px rgba(0,0,0,.45),0 0 0 1px rgba(200,145,58,.08)}
+    .card-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:#1e1208}
+    .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+    .card:hover .card-img img{transform:scale(1.1)}
+    .card-badge{
+      position:absolute;top:10px;inset-inline-start:10px;
+      background:rgba(12,8,4,.82);backdrop-filter:blur(10px);
+      border:1px solid var(--border);color:var(--gold-lt);
+      font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;
+      letter-spacing:.04em;
+    }
+    .card-hover-layer{
+      position:absolute;inset:0;
+      background:rgba(12,8,4,.45);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transition:opacity var(--tr);
+    }
+    .card:hover .card-hover-layer{opacity:1}
+    .zoom-circle{
+      width:46px;height:46px;border-radius:50%;
+      background:rgba(200,145,58,.92);
+      display:flex;align-items:center;justify-content:center;
+      color:#0c0804;font-size:1rem;
+      transform:scale(.7);transition:transform var(--tr);
+    }
+    .card:hover .zoom-circle{transform:scale(1)}
+    .card-body{padding:15px 16px}
+    .card-name{font-size:.96rem;font-weight:700;color:var(--cream);margin-bottom:5px;line-height:1.3}
+    .card-desc{
+      font-size:.78rem;color:var(--muted);line-height:1.55;margin-bottom:13px;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .card-foot{
+      display:flex;align-items:center;justify-content:space-between;
+      padding-top:11px;border-top:1px solid rgba(255,255,255,.055);
+    }
+    .card-price{font-size:1rem;font-weight:800;color:var(--gold);font-family:'Playfair Display',serif}
+    .card-price sub{font-size:.68rem;color:var(--muted);font-weight:400;font-family:inherit}
+    .card-order{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:6px 11px;
+      background:rgba(255,102,0,.1);border:1px solid rgba(255,102,0,.28);
+      color:#ff7733;font-size:.73rem;font-weight:700;border-radius:8px;
+      transition:all var(--tr);
+    }
+    .card-order:hover{background:rgba(255,102,0,.22);border-color:rgba(255,102,0,.55)}
 
-  /* ===== MOBILE ===== */
-  @media (max-width: 768px) {
-    section { padding: 60px 16px; }
-    .contact-grid { grid-template-columns: 1fr; }
-    .cat-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; }
-    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-    .lang-toggle { top: 12px; left: 12px; }
-    .info-bar { flex-direction: column; gap: 12px; }
-    .social-links { flex-direction: column; }
-  }
+    /* ── Lightbox ──────────────────────────────────── */
+    #lb{
+      display:none;position:fixed;inset:0;z-index:9999;
+      background:rgba(0,0,0,.88);backdrop-filter:blur(8px);
+      align-items:center;justify-content:center;padding:20px;
+    }
+    #lb.on{display:flex}
+    .lb-box{
+      position:relative;max-width:680px;width:100%;
+      background:var(--card);border:1px solid var(--border);border-radius:22px;
+      overflow:hidden;animation:lbIn .3s ease both;
+    }
+    @keyframes lbIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:none}}
+    .lb-img{position:relative;aspect-ratio:16/10;background:#1a1008}
+    .lb-img img{width:100%;height:100%;object-fit:cover}
+    .lb-info{padding:24px 28px}
+    .lb-name{font-size:1.45rem;font-weight:800;color:var(--cream);margin-bottom:8px}
+    .lb-desc{color:var(--muted);line-height:1.75;margin-bottom:18px}
+    .lb-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .lb-price{font-size:1.4rem;font-weight:900;color:var(--gold);font-family:'Playfair Display',serif}
+    .lb-close{
+      position:absolute;top:14px;inset-inline-end:14px;
+      width:38px;height:38px;border-radius:50%;
+      background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--cream);font-size:1.1rem;
+      display:flex;align-items:center;justify-content:center;
+      transition:all var(--tr);z-index:2;
+    }
+    .lb-close:hover{background:rgba(200,145,58,.85);color:#0c0804;border-color:transparent}
 
-  /* ===== HIDDEN CLASS FOR FILTER ===== */
-  .menu-card.hidden { display: none; }
-</style>
+    /* ── Contact ───────────────────────────────────── */
+    #contact{background:var(--bg2);border-top:1px solid var(--border)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+    .c-cards{display:flex;flex-direction:column;gap:14px}
+    .c-card{
+      background:rgba(255,255,255,.026);border:1px solid var(--border);
+      border-radius:14px;padding:18px 20px;
+      display:flex;align-items:center;gap:15px;
+      transition:all var(--tr);text-decoration:none;color:inherit;
+    }
+    .c-card:hover{border-color:rgba(200,145,58,.45);background:rgba(200,145,58,.05);transform:translateX(4px)}
+    [dir="rtl"] .c-card:hover{transform:translateX(-4px)}
+    .c-icon{
+      width:48px;height:48px;border-radius:12px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:1.25rem;
+    }
+    .c-icon.wa{background:rgba(37,211,102,.14);color:#25d366}
+    .c-icon.ig{background:rgba(193,53,132,.14);color:#e1306c}
+    .c-icon.map{background:rgba(200,145,58,.14);color:var(--gold)}
+    .c-lbl{font-size:.72rem;color:var(--muted);margin-bottom:3px}
+    .c-val{font-size:.93rem;font-weight:600;color:var(--cream)}
+    .map-box{
+      border-radius:18px;overflow:hidden;
+      border:1px solid var(--border);height:300px;
+      box-shadow:0 16px 40px rgba(0,0,0,.35);
+    }
+    .map-box iframe{width:100%;height:100%;border:none;display:block}
+
+    /* ── Footer ────────────────────────────────────── */
+    footer{
+      background:#080503;border-top:1px solid var(--border);
+      padding:36px 24px;text-align:center;
+    }
+    .ft-logo{height:48px;margin:0 auto 18px;opacity:.8}
+    .ft-soc{display:flex;justify-content:center;gap:12px;margin-bottom:22px}
+    .soc-btn{
+      width:42px;height:42px;border-radius:10px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--muted);font-size:1.05rem;transition:all var(--tr);
+    }
+    .soc-btn:hover{background:rgba(200,145,58,.14);border-color:var(--gold);color:var(--gold-lt);transform:translateY(-2px)}
+    .ft-copy{font-size:.78rem;color:var(--muted)}
+
+    /* ── WhatsApp float ────────────────────────────── */
+    #wa{
+      position:fixed;bottom:26px;inset-inline-end:26px;z-index:800;
+      width:58px;height:58px;border-radius:50%;
+      background:linear-gradient(135deg,#25d366,#128c7e);
+      box-shadow:0 4px 22px rgba(37,211,102,.45);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:1.55rem;transition:transform var(--tr);
+      animation:waPop .6s .8s ease both,waPulse 2.5s 1.5s ease infinite;
+    }
+    @keyframes waPop{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+    @keyframes waPulse{
+      0%,100%{box-shadow:0 4px 22px rgba(37,211,102,.45)}
+      50%{box-shadow:0 4px 32px rgba(37,211,102,.7),0 0 0 8px rgba(37,211,102,.08)}
+    }
+    #wa:hover{transform:scale(1.12)}
+
+    /* ── Fade-in scroll ────────────────────────────── */
+    .fi{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+    .fi.d1{transition-delay:.1s}
+    .fi.d2{transition-delay:.2s}
+    .fi.d3{transition-delay:.3s}
+    .fi.vis{opacity:1;transform:translateY(0)}
+
+    /* ── Responsive ────────────────────────────────── */
+    @media(max-width:920px){
+      .nav-links{display:none}
+      .ham{display:flex}
+      .about-grid{grid-template-columns:1fr;gap:40px}
+      .about-img{order:-1}
+      .menu-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+      .contact-grid{grid-template-columns:1fr;gap:36px}
+      .stat-row{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:520px){
+      .menu-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+      .card-body{padding:11px 12px}
+      .card-name{font-size:.88rem}
+      .card-desc{font-size:.73rem}
+      h1.hero-title{font-size:2.2rem}
+      .hero-logo{width:78px;height:78px}
+      .tabs{gap:7px}
+      .tab{padding:7px 13px;font-size:.78rem}
+      .stat-row{grid-template-columns:repeat(3,1fr)}
+      .stat-n{font-size:1.6rem}
+    }
+  </style>
 </head>
-<body>
+<body class="lang-ku" dir="rtl">
 
-<!-- Language Toggle -->
-<div class="lang-toggle">
-  <button class="lang-btn active" onclick="setLang('ku')">کوردی</button>
-  <button class="lang-btn" onclick="setLang('en')">EN</button>
+<!-- WhatsApp Float -->
+<a id="wa" href="https://wa.me/9647507851599" target="_blank" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Lightbox -->
+<div id="lb" onclick="lbClose(event)">
+  <div class="lb-box">
+    <button class="lb-close" onclick="lbClose()"><i class="fas fa-times"></i></button>
+    <div class="lb-img"><img id="lbImg" src="" alt=""></div>
+    <div class="lb-info">
+      <div class="lb-name" id="lbName"></div>
+      <div class="lb-desc" id="lbDesc"></div>
+      <div class="lb-foot">
+        <div class="lb-price" id="lbPrice"></div>
+        <a href="https://www.talabat.com/ar/iraq/c-star-coffee" target="_blank" class="btn-tal">
+          <i class="fas fa-motorcycle"></i>
+          <span class="t" data-k="orderTal"></span>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Navbar -->
-<nav>
-  <div class="nav-logo">C<span>—</span>STAR</div>
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/logo.png?raw=true" alt="C-Star Coffee" class="nav-logo">
+    <ul class="nav-links">
+      <li><a href="#hero" class="t" data-k="nHome"></a></li>
+      <li><a href="#about" class="t" data-k="nAbout"></a></li>
+      <li><a href="#menu" class="t" data-k="nMenu"></a></li>
+      <li><a href="#contact" class="t" data-k="nContact"></a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-sw">
+        <button class="lang-btn on" data-l="ku" onclick="setLang('ku')">کوردی</button>
+        <button class="lang-btn" data-l="ar" onclick="setLang('ar')">عربی</button>
+        <button class="lang-btn" data-l="en" onclick="setLang('en')">EN</button>
+      </div>
+      <button class="ham" id="ham" onclick="toggleMob()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <!-- 
-    TO ADD YOUR OWN HERO IMAGE:
-    1. Upload a photo of your coffee shop to GitHub
-    2. Remove display:none from .hero-img in CSS
-    3. Change src="YOUR_IMAGE.jpg" below
-  -->
-  <img src="hero.jpg" alt="C-Star Coffee" class="hero-img">
-  <div class="hero-content">
-    <span class="hero-badge ku-text">هەولێر · ھەولێری نوێ</span>
-    <h1 class="hero-title">C<span class="star">★</span>STAR</h1>
-    <p class="hero-subtitle-ku ku-text">بەخۆشترین قاوەی هەولێر</p>
-    <p class="hero-subtitle-en en-text" style="display:none">The Finest Coffee in Erbil</p>
-    <a href="#menu" class="hero-cta">
-      <span class="ku-text">مینیوی ئێمە ببینە</span>
-      <span class="en-text" style="display:none">Explore Our Menu</span>
-      ☕
-    </a>
-  </div>
-  <div class="hero-scroll">
-    <span class="ku-text">داخستن</span>
-    <span class="en-text" style="display:none">scroll</span>
-  </div>
-</section>
-
-<!-- ===== INFO BAR ===== -->
-<div class="info-bar">
-  <div class="info-item">
-    <div class="info-icon">📍</div>
-    <div>
-      <span class="info-label ku-text">ناونیشان</span>
-      <span class="info-label en-text" style="display:none">Location</span>
-      <span class="info-value ku-text">هەولێری نوێ، هەولێر</span>
-      <span class="info-value en-text" style="display:none">Hawleri Nwe, Erbil</span>
-    </div>
-  </div>
-  <div class="info-item">
-    <div class="info-icon">⭐</div>
-    <div>
-      <span class="info-label ku-text">هەڵسەنگاندن</span>
-      <span class="info-label en-text" style="display:none">Rating</span>
-      <span class="info-value">5.0 / 5</span>
-    </div>
-  </div>
-  <div class="info-item">
-    <div class="info-icon">💰</div>
-    <div>
-      <span class="info-label ku-text">نرخ بۆ کەسێک</span>
-      <span class="info-label en-text" style="display:none">Price per person</span>
-      <span class="info-value">5,000 — 10,000 IQD</span>
-    </div>
-  </div>
-  <div class="info-item">
-    <div class="info-icon">🛵</div>
-    <div>
-      <span class="info-label ku-text">گەیاندن</span>
-      <span class="info-label en-text" style="display:none">Delivery</span>
-      <span class="info-value">Talabat ✓</span>
-    </div>
-  </div>
+<!-- Mobile nav -->
+<div class="mob-nav" id="mobNav">
+  <a href="#hero" onclick="toggleMob()" class="t" data-k="nHome"></a>
+  <a href="#about" onclick="toggleMob()" class="t" data-k="nAbout"></a>
+  <a href="#menu" onclick="toggleMob()" class="t" data-k="nMenu"></a>
+  <a href="#contact" onclick="toggleMob()" class="t" data-k="nContact"></a>
 </div>
 
-<!-- ===== CATEGORIES ===== -->
-<section class="categories" id="categories">
-  <div class="section-header reveal">
-    <span class="section-tag">MENU</span>
-    <h2 class="section-title">Our Categories</h2>
-    <p class="section-title-ku ku-text">جۆرەکانی مینیو</p>
-    <p class="section-title-ku en-text" style="display:none">Browse by Category</p>
-    <div class="section-line"></div>
-  </div>
-  <div class="cat-grid">
-    <div class="cat-card reveal" onclick="filterMenu('hot')">
-      <span class="cat-emoji">☕</span>
-      <div class="cat-name ku-text">خواردنەوەی گەرم</div>
-      <div class="cat-name en-text" style="display:none">Hot Drinks</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('cold')">
-      <span class="cat-emoji">🧊</span>
-      <div class="cat-name ku-text">خواردنەوەی سارد</div>
-      <div class="cat-name en-text" style="display:none">Cold Drinks</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('smoothie')">
-      <span class="cat-emoji">🥤</span>
-      <div class="cat-name ku-text">سموتی</div>
-      <div class="cat-name en-text" style="display:none">Smoothie</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('juice')">
-      <span class="cat-emoji">🍊</span>
-      <div class="cat-name ku-text">ئاو میوە</div>
-      <div class="cat-name en-text" style="display:none">Fresh Juices</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('milkshake')">
-      <span class="cat-emoji">🍦</span>
-      <div class="cat-name ku-text">میلک شەیک</div>
-      <div class="cat-name en-text" style="display:none">Milkshake</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('mojito')">
-      <span class="cat-emoji">🍹</span>
-      <div class="cat-name ku-text">موهیتو</div>
-      <div class="cat-name en-text" style="display:none">Mojito</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('icedtea')">
-      <span class="cat-emoji">🍵</span>
-      <div class="cat-name ku-text">چای سارد</div>
-      <div class="cat-name en-text" style="display:none">Iced Tea</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('cake')">
-      <span class="cat-emoji">🍰</span>
-      <div class="cat-name ku-text">کەیک</div>
-      <div class="cat-name en-text" style="display:none">Cakes</div>
-    </div>
-    <div class="cat-card reveal" onclick="filterMenu('all')">
-      <span class="cat-emoji">✨</span>
-      <div class="cat-name ku-text">هەموو</div>
-      <div class="cat-name en-text" style="display:none">All</div>
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-veil"></div>
+  <div class="hero-veil2"></div>
+  <div class="hero-content">
+    <div class="hero-pill"><i class="fas fa-star"></i> <span class="t" data-k="hBadge"></span></div>
+    <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/logo.png?raw=true" alt="C-Star Coffee" class="hero-logo">
+    <h1 class="hero-title">C&#8209;Star <em>Coffee</em></h1>
+    <p class="hero-sub t" data-k="hSub"></p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-gold"><i class="fas fa-utensils"></i> <span class="t" data-k="hMenu"></span></a>
+      <a href="https://www.talabat.com/ar/iraq/c-star-coffee" target="_blank" class="btn-ghost"><i class="fas fa-motorcycle"></i> <span class="t" data-k="hOrder"></span></a>
     </div>
   </div>
+  <div class="hero-scroll"><div class="scroll-arr"></div></div>
 </section>
 
-<!-- ===== MENU ===== -->
-<section class="menu-section" id="menu">
-  <div class="section-header reveal">
-    <span class="section-tag">DRINKS & FOOD</span>
-    <h2 class="section-title">Our Menu</h2>
-    <p class="section-title-ku ku-text">مینیوی ئێمە</p>
-    <p class="section-title-ku en-text" style="display:none">Everything We Serve</p>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="menu-filter">
-    <button class="filter-btn active" onclick="filterMenu('all',this)">
-      <span class="ku-text">هەموو</span><span class="en-text" style="display:none">All</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('hot',this)">
-      <span class="ku-text">گەرم</span><span class="en-text" style="display:none">Hot</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('cold',this)">
-      <span class="ku-text">سارد</span><span class="en-text" style="display:none">Cold</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('smoothie',this)">
-      <span class="ku-text">سموتی</span><span class="en-text" style="display:none">Smoothie</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('juice',this)">
-      <span class="ku-text">ئاو میوە</span><span class="en-text" style="display:none">Juice</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('milkshake',this)">
-      <span class="ku-text">شەیک</span><span class="en-text" style="display:none">Shake</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('mojito',this)">
-      <span class="ku-text">موهیتو</span><span class="en-text" style="display:none">Mojito</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('icedtea',this)">
-      <span class="ku-text">چای سارد</span><span class="en-text" style="display:none">Iced Tea</span>
-    </button>
-    <button class="filter-btn" onclick="filterMenu('cake',this)">
-      <span class="ku-text">کەیک</span><span class="en-text" style="display:none">Cakes</span>
-    </button>
-  </div>
-
-  <div class="menu-grid" id="menuGrid">
-    <!-- HOT DRINKS -->
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">☕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Mocha</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، پووری کاکاۆ، شیر و کرێمی وشک</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, cocoa powder, milk and whipped cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Mocha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+<!-- About -->
+<section id="about" class="sec">
+  <div class="sec-in">
+    <div class="about-grid">
+      <div class="about-txt fi">
+        <div class="sec-label t" data-k="aLabel"></div>
+        <h2 class="sec-title">C-Star Coffee</h2>
+        <div class="sec-line"></div>
+        <p class="t" data-k="aP1"></p>
+        <p class="t" data-k="aP2"></p>
+        <div class="stat-row">
+          <div class="stat-box fi d1"><div class="stat-n">5.0</div><div class="stat-l">★★★★★</div></div>
+          <div class="stat-box fi d2"><div class="stat-n">16+</div><div class="stat-l t" data-k="sItems"></div></div>
+          <div class="stat-box fi d3"><div class="stat-n">100%</div><div class="stat-l t" data-k="sFresh"></div></div>
         </div>
       </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">☕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Cappuccino</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری گەرم و کەفی شیر</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, steamed milk and milk foam</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Cappuccino','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">🫘</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Americano</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ و ئاو</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso and water</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">4,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Americano','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">☕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Latte</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری گەرم و شەکر</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, steamed milk and sugar</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">4,500 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Latte','4,500 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">☕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Spanish Latte</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری شیرین کراو و شیری شیرین کۆندێنس</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, evaporated milk and sweetened condensed milk</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Spanish Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">🍵</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Matcha</h3>
-        <p class="menu-card-desc ku-text">چای کەوی جاپۆنی، شیری کۆکۆنەت و یەخ</p>
-        <p class="menu-card-desc en-text" style="display:none">Japanese green tea, coconut milk and ice</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Matcha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">🫖</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Turkish Coffee</h3>
-        <p class="menu-card-desc ku-text">قاوەی تورکی و ئاو</p>
-        <p class="menu-card-desc en-text" style="display:none">Turkish coffee and water</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Turkish Coffee','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">☕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Qazvan Coffee</h3>
-        <p class="menu-card-desc ku-text">قاوەی بێ کافین کراو لە دانەی پستەی برژاندراو</p>
-        <p class="menu-card-desc en-text" style="display:none">Decaffeinated coffee from roasted pistachio beans</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Qazvan Coffee','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="hot">
-      <div class="menu-card-img-placeholder">⚡</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
-        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
-        <h3 class="menu-card-name">Espresso</h3>
-        <p class="menu-card-desc ku-text">دانەی قاوەی ئێسپریسۆی خواردراو و ئاو</p>
-        <p class="menu-card-desc en-text" style="display:none">Ground espresso coffee beans and water</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">3,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Espresso','3,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- COLD DRINKS -->
-    <div class="menu-card reveal" data-cat="cold">
-      <div class="menu-card-img-placeholder">🧊</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
-        <h3 class="menu-card-name">Ice Americano</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، یەخ و ئاو</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, ice and water</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Ice Americano','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cold">
-      <div class="menu-card-img-placeholder">🧊</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
-        <h3 class="menu-card-name">Iced Latte</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، یەخ، شیری گەرم و شەکر</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, ice, steamed milk and sugar</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cold">
-      <div class="menu-card-img-placeholder">🍫</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
-        <h3 class="menu-card-name">Iced Mocha</h3>
-        <p class="menu-card-desc ku-text">ئێسپریسۆ، پووری کاکاۆ، شیر، یەخ و کرێمی وشک</p>
-        <p class="menu-card-desc en-text" style="display:none">Espresso, cocoa powder, milk, ice and whipped cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Mocha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cold">
-      <div class="menu-card-img-placeholder">🍵</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
-        <h3 class="menu-card-name">Matcha Latte (Iced)</h3>
-        <p class="menu-card-desc ku-text">چای کەوی جاپۆنی، شیری کۆکۆنەت و یەخ</p>
-        <p class="menu-card-desc en-text" style="display:none">Japanese green tea, coconut milk and ice</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Matcha Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SMOOTHIE -->
-    <div class="menu-card reveal" data-cat="smoothie">
-      <div class="menu-card-img-placeholder">🥭</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">سموتی</span>
-        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
-        <h3 class="menu-card-name">Mango Smoothie</h3>
-        <p class="menu-card-desc ku-text">مەنگۆ، ئاو، یەخ و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Mango, water, ice and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Mango Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="smoothie">
-      <div class="menu-card-img-placeholder">🍓</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">سموتی</span>
-        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
-        <h3 class="menu-card-name">Strawberry Smoothie</h3>
-        <p class="menu-card-desc ku-text">فراولە، ئاو، یەخ و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Strawberries, water, ice and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="smoothie">
-      <div class="menu-card-img-placeholder">🍍</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">سموتی</span>
-        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
-        <h3 class="menu-card-name">Pineapple Smoothie</h3>
-        <p class="menu-card-desc ku-text">ئەناناس، ئاو، یەخ و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Pineapple, water, ice and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Pineapple Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="smoothie">
-      <div class="menu-card-img-placeholder">🫐</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">سموتی</span>
-        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
-        <h3 class="menu-card-name">Berry Mix</h3>
-        <p class="menu-card-desc ku-text">ترێی ڕەش، بلووبێری و فراولە</p>
-        <p class="menu-card-desc en-text" style="display:none">Blackberries, blueberries and strawberries blend</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Berry Mix','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRESH JUICES -->
-    <div class="menu-card reveal" data-cat="juice">
-      <div class="menu-card-img-placeholder">🍊</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
-        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
-        <h3 class="menu-card-name">Orange Juice</h3>
-        <p class="menu-card-desc ku-text">پرتەقاڵی تازە، ئاو و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Fresh oranges, water and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Orange Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="juice">
-      <div class="menu-card-img-placeholder">🥭</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
-        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
-        <h3 class="menu-card-name">Mango Juice</h3>
-        <p class="menu-card-desc ku-text">مەنگۆ، ئاو و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Mango, water and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Mango Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="juice">
-      <div class="menu-card-img-placeholder">🍓</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
-        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
-        <h3 class="menu-card-name">Strawberry Juice</h3>
-        <p class="menu-card-desc ku-text">فراولەی تازە، ئاو و شیرین کەر</p>
-        <p class="menu-card-desc en-text" style="display:none">Fresh strawberries, water and sweeteners</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MILKSHAKE -->
-    <div class="menu-card reveal" data-cat="milkshake">
-      <div class="menu-card-img-placeholder">🍦</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">میلک شەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
-        <h3 class="menu-card-name">Vanilla Milkshake</h3>
-        <p class="menu-card-desc ku-text">ڤانیلیا، دۆنداورمای ڤانیلیا، شیر و کرێم</p>
-        <p class="menu-card-desc en-text" style="display:none">Vanilla, vanilla ice cream, milk served with cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">6,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Vanilla Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="milkshake">
-      <div class="menu-card-img-placeholder">🍪</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">میلک شەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
-        <h3 class="menu-card-name">Lotus Milkshake</h3>
-        <p class="menu-card-desc ku-text">لۆتەس، دۆنداورمای لۆتەس، شیر و کرێم</p>
-        <p class="menu-card-desc en-text" style="display:none">Lotus spread, Lotus ice cream, milk served with cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">6,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Lotus Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="milkshake">
-      <div class="menu-card-img-placeholder">🍫</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">میلک شەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
-        <h3 class="menu-card-name">Nutella Milkshake</h3>
-        <p class="menu-card-desc ku-text">نوتێلا، دۆنداورمای نوتێلا، شیر و کرێم</p>
-        <p class="menu-card-desc en-text" style="display:none">Nutella, Nutella ice cream, milk served with cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">6,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Nutella Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="milkshake">
-      <div class="menu-card-img-placeholder">🍦</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">میلک شەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
-        <h3 class="menu-card-name">Pistachio Milkshake</h3>
-        <p class="menu-card-desc ku-text">سۆسی پستە، دۆنداورمای پستە، شیر و کرێمی پستەی تیکێڵ</p>
-        <p class="menu-card-desc en-text" style="display:none">Pistachio sauce, pistachio ice cream, milk served with cream and pistachio pieces</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">6,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Pistachio Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MOJITO -->
-    <div class="menu-card reveal" data-cat="mojito">
-      <div class="menu-card-img-placeholder">🍹</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">موهیتو</span>
-        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
-        <h3 class="menu-card-name">Classic Mojito</h3>
-        <p class="menu-card-desc ku-text">سیرووپی لیمۆ، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
-        <p class="menu-card-desc en-text" style="display:none">Lemon syrup, mint leaves, lemon slices, ice and 7UP</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Classic Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="mojito">
-      <div class="menu-card-img-placeholder">🍓</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">موهیتو</span>
-        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
-        <h3 class="menu-card-name">Strawberry Mojito</h3>
-        <p class="menu-card-desc ku-text">سیرووپی فراولە، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
-        <p class="menu-card-desc en-text" style="display:none">Strawberry syrup, mint leaves, lemon slices, ice and 7UP</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="mojito">
-      <div class="menu-card-img-placeholder">🫐</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">موهیتو</span>
-        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
-        <h3 class="menu-card-name">Berry Mojito</h3>
-        <p class="menu-card-desc ku-text">سیرووپی توتفرەنگی تێکەڵ، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
-        <p class="menu-card-desc en-text" style="display:none">Mixed berry syrup, mint leaves, lemon slices, ice and 7UP</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Berry Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ICED TEA -->
-    <div class="menu-card reveal" data-cat="icedtea">
-      <div class="menu-card-img-placeholder">🍵</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">چای سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
-        <h3 class="menu-card-name">Iced Tea</h3>
-        <p class="menu-card-desc ku-text">چای سارد</p>
-        <p class="menu-card-desc en-text" style="display:none">Classic iced tea</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="icedtea">
-      <div class="menu-card-img-placeholder">🍋</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">چای سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
-        <h3 class="menu-card-name">Lemon Iced Tea</h3>
-        <p class="menu-card-desc ku-text">چای سارد شیرین کراو لەگەڵ تامی لیمۆ</p>
-        <p class="menu-card-desc en-text" style="display:none">Sweetened iced tea with lemon flavor</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Lemon Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="icedtea">
-      <div class="menu-card-img-placeholder">🍑</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">چای سارد</span>
-        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
-        <h3 class="menu-card-name">Peach Iced Tea</h3>
-        <p class="menu-card-desc ku-text">چای سارد شیرین کراو لەگەڵ تامی خووخ</p>
-        <p class="menu-card-desc en-text" style="display:none">Sweetened peach-flavored iced tea</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Peach Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- CAKES -->
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🎂</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">San Sebastian</h3>
-        <p class="menu-card-desc ku-text">کەیکی سان سیباستیانی کرێمی لەگەڵ سۆسی چۆکلاتا</p>
-        <p class="menu-card-desc en-text" style="display:none">Creamy San Sebastian cake served with chocolate sauce</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">6,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('San Sebastian Cake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🍰</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Lotus Cheesecake</h3>
-        <p class="menu-card-desc ku-text">بیسکیتی خوردکراو، کرێمی پنیر شیرین و سۆسی لۆتەس</p>
-        <p class="menu-card-desc en-text" style="display:none">Crushed biscuits, sweet cream cheese and Lotus sauce</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Lotus Cheesecake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🧁</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Tiramisu</h3>
-        <p class="menu-card-desc ku-text">چەند چینێک بیسکیت، کرێمی ماسکارپۆنی و پووری کاکاۆ</p>
-        <p class="menu-card-desc en-text" style="display:none">Layers of biscuits, mascarpone cream, sugar and coffee, decorated with cocoa powder</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Tiramisu','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🍫</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Black Velvet</h3>
-        <p class="menu-card-desc ku-text">چینەکانی کەیک پڕکراوە لە کرێمی چۆکلاتا</p>
-        <p class="menu-card-desc en-text" style="display:none">Layers of cake filled with chocolate cream</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Black Velvet Cake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🥕</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Carrot Cake</h3>
-        <p class="menu-card-desc ku-text">زردەک خوردکراو، دارچین و گوێزی ئینگلیزی لەگەڵ خمیری کەیک</p>
-        <p class="menu-card-desc en-text" style="display:none">Grated carrots, cinnamon and walnuts baked with cake mix</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">5,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Carrot Cake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🥐</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Croissant</h3>
-        <p class="menu-card-desc ku-text">چینەکانی کرواسان ترد</p>
-        <p class="menu-card-desc en-text" style="display:none">Crispy croissant layers</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">4,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Croissant','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-card reveal" data-cat="cake">
-      <div class="menu-card-img-placeholder">🥞</div>
-      <div class="menu-card-body">
-        <span class="menu-card-cat ku-text">کەیک</span>
-        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
-        <h3 class="menu-card-name">Pancakes</h3>
-        <p class="menu-card-desc ku-text">پانکەیک تازە</p>
-        <p class="menu-card-desc en-text" style="display:none">Fresh fluffy pancakes</p>
-        <div class="menu-card-footer">
-          <div class="menu-price">4,000 <span>IQD</span></div>
-          <button class="whatsapp-btn" onclick="orderWhatsApp('Pancakes','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
-        </div>
-      </div>
-    </div>
-  </div><!-- end menu-grid -->
-</section>
-
-<!-- ===== REVIEWS ===== -->
-<section class="reviews" id="reviews">
-  <div class="section-header reveal">
-    <span class="section-tag">REVIEWS</span>
-    <h2 class="section-title">What People Say</h2>
-    <p class="section-title-ku ku-text">بیروڕای کەسانی خۆشەویست</p>
-    <p class="section-title-ku en-text" style="display:none">Our Happy Customers</p>
-    <div class="section-line"></div>
-  </div>
-  <div class="reviews-grid">
-    <div class="review-card reveal">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="review-text">"Nice spot for coffee with a chill, comfortable vibe. The coffee is well made, the space feels welcoming, and it's an easy place to relax or catch up with someone."</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">R</div>
-        <div>
-          <div class="reviewer-name">Rawaz Sherwan</div>
-          <div class="reviewer-date ku-text">٢ مانگ پێش ئێستا</div>
-          <div class="reviewer-date en-text" style="display:none">2 months ago</div>
-        </div>
-      </div>
-    </div>
-    <div class="review-card reveal">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="review-text ku-text">"زۆر خۆشە. قاوەی باشی هەیە، شوێنەکە هەستی خۆشی دەدات."</p>
-      <p class="review-text en-text" style="display:none">"Very nice. Good coffee, the place has a great vibe."</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">S</div>
-        <div>
-          <div class="reviewer-name">Shex Malik</div>
-          <div class="reviewer-date ku-text">٣ مانگ پێش ئێستا</div>
-          <div class="reviewer-date en-text" style="display:none">3 months ago</div>
-        </div>
-      </div>
-    </div>
-    <div class="review-card reveal">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="review-text ku-text">"نرخ بۆ کەسێک نێوان ٥ تا ١٠ هەزار دینار. بەهای باشە بۆ ئەم کوالیتییە."</p>
-      <p class="review-text en-text" style="display:none">"Price per person 5k–10k IQD. Great value for this quality."</p>
-      <div class="reviewer">
-        <div class="reviewer-avatar">S</div>
-        <div>
-          <div class="reviewer-name">Sipa</div>
-          <div class="reviewer-date ku-text">٣ مانگ پێش ئێستا · ١٦ هەڵسەنگاندن</div>
-          <div class="reviewer-date en-text" style="display:none">3 months ago · 16 reviews</div>
+      <div class="about-img fi d1">
+        <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true" alt="C-Star Coffee interior" loading="lazy">
+        <div class="about-img-badge">
+          <div class="about-stars">★★★★★</div>
+          <div class="about-rate">5.0 / 5</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== CONTACT ===== -->
-<section class="contact" id="contact">
-  <div class="section-header reveal">
-    <span class="section-tag">FIND US</span>
-    <h2 class="section-title">Visit Us</h2>
-    <p class="section-title-ku ku-text">بمەوە سەردانمان بکە</p>
-    <p class="section-title-ku en-text" style="display:none">Come Find Us</p>
-    <div class="section-line"></div>
-  </div>
-  <div class="contact-grid">
-    <div class="contact-info">
-      <div class="contact-item reveal">
-        <div class="contact-icon">📍</div>
-        <div>
-          <span class="contact-item-label ku-text">ناونیشان</span>
-          <span class="contact-item-label en-text" style="display:none">Address</span>
-          <span class="contact-item-value ku-text">636G+GRR، هەولێری نوێ، هەولێر، عێراق</span>
-          <span class="contact-item-value en-text" style="display:none">636G+GRR, Hawleri Nwe, Erbil, Iraq</span>
-        </div>
-      </div>
-      <div class="contact-item reveal">
-        <div class="contact-icon">⭐</div>
-        <div>
-          <span class="contact-item-label ku-text">هەڵسەنگاندنی گووگڵ</span>
-          <span class="contact-item-label en-text" style="display:none">Google Rating</span>
-          <span class="contact-item-value">5.0 ★★★★★</span>
-        </div>
-      </div>
-      <div class="contact-item reveal">
-        <div class="contact-icon">🛵</div>
-        <div>
-          <span class="contact-item-label ku-text">گەیاندن</span>
-          <span class="contact-item-label en-text" style="display:none">Delivery</span>
-          <span class="contact-item-value ku-text">بەردەستە لەسەر Talabat</span>
-          <span class="contact-item-value en-text" style="display:none">Available on Talabat</span>
-        </div>
-      </div>
-      <div class="social-links reveal">
-        <!-- 
-          IMPORTANT: Replace the href values below with:
-          - WhatsApp: https://wa.me/9647XXXXXXXXX  (replace with real phone)
-          - Phone: tel:+9647XXXXXXXXX
-        -->
-        <a href="https://wa.me/9647000000000" class="social-btn whatsapp" target="_blank">
-          📲 <span class="ku-text">واتساپ</span><span class="en-text" style="display:none">WhatsApp</span>
-        </a>
-        <a href="tel:+9647000000000" class="social-btn phone">
-          📞 <span class="ku-text">پەیوەندی</span><span class="en-text" style="display:none">Call Us</span>
-        </a>
-      </div>
+<!-- Menu -->
+<section id="menu" class="sec">
+  <div class="sec-in">
+    <div class="menu-head fi">
+      <div class="sec-label t" data-k="mLabel"></div>
+      <h2 class="sec-title t" data-k="mTitle"></h2>
+      <div class="sec-line"></div>
     </div>
-
-    <a href="https://maps.app.goo.gl/pMSW5TDqaJNu9KCn9" target="_blank" class="map-link reveal">
-      <div class="map-placeholder">🗺️</div>
-      <p class="map-cta-text ku-text">کرتە بکە بۆ کردنەوەی نەخشە</p>
-      <p class="map-cta-text en-text" style="display:none">Tap to Open Google Maps</p>
-      <p class="map-address">هەولێری نوێ، هەولێر · C-Star Coffee</p>
-    </a>
+    <div class="tal-bar fi">
+      <div class="tal-txt t" data-k="talTxt"></div>
+      <a href="https://www.talabat.com/ar/iraq/c-star-coffee" target="_blank" class="btn-tal">
+        <i class="fas fa-motorcycle"></i> <span class="t" data-k="talBtn"></span>
+      </a>
+    </div>
+    <div class="tabs fi" id="tabs">
+      <button class="tab on" data-c="all" onclick="filter('all')"><span class="t" data-k="cAll"></span></button>
+      <button class="tab" data-c="hot"  onclick="filter('hot')"><span class="t" data-k="cHot"></span></button>
+      <button class="tab" data-c="cold" onclick="filter('cold')"><span class="t" data-k="cCold"></span></button>
+      <button class="tab" data-c="smo"  onclick="filter('smo')"><span class="t" data-k="cSmo"></span></button>
+      <button class="tab" data-c="tea"  onclick="filter('tea')"><span class="t" data-k="cTea"></span></button>
+      <button class="tab" data-c="jus"  onclick="filter('jus')"><span class="t" data-k="cJus"></span></button>
+      <button class="tab" data-c="milk" onclick="filter('milk')"><span class="t" data-k="cMilk"></span></button>
+      <button class="tab" data-c="moj"  onclick="filter('moj')"><span class="t" data-k="cMoj"></span></button>
+      <button class="tab" data-c="cake" onclick="filter('cake')"><span class="t" data-k="cCake"></span></button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
   </div>
 </section>
 
-<!-- ===== FOOTER ===== */-->
+<!-- Contact -->
+<section id="contact" class="sec">
+  <div class="sec-in">
+    <div class="contact-grid">
+      <div class="fi">
+        <div class="sec-label t" data-k="ctLabel"></div>
+        <h2 class="sec-title t" data-k="ctTitle"></h2>
+        <div class="sec-line"></div>
+        <div class="c-cards">
+          <a href="https://wa.me/9647507851599" target="_blank" class="c-card">
+            <div class="c-icon wa"><i class="fab fa-whatsapp"></i></div>
+            <div><div class="c-lbl t" data-k="ctWa"></div><div class="c-val">+964 750 785 1599</div></div>
+          </a>
+          <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="c-card">
+            <div class="c-icon ig"><i class="fab fa-instagram"></i></div>
+            <div><div class="c-lbl">Instagram</div><div class="c-val">@cstar.coffee</div></div>
+          </a>
+          <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="c-card">
+            <div class="c-icon map"><i class="fas fa-map-marker-alt"></i></div>
+            <div><div class="c-lbl t" data-k="ctLoc"></div><div class="c-val t" data-k="ctLocV"></div></div>
+          </a>
+        </div>
+      </div>
+      <div class="fi d1">
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1629.15!2d44.0085!3d36.1834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007243a2f6af5eb%3A0x2d8e29aef0dc3b3a!2sC%20Star%20Coffee!5e0!3m2!1sen!2siq!4v1699000000000!5m2!1sen!2siq" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="C-Star Coffee Location"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer>
-  <div class="footer-logo">C<span style="color:var(--cream)">★</span>STAR</div>
-  <p class="footer-text">
-    <span class="ku-text">© ٢٠٢٤ C-Star Coffee — هەولێری نوێ، هەولێر</span>
-    <span class="en-text" style="display:none">© 2024 C-Star Coffee — Hawleri Nwe, Erbil</span>
-  </p>
-  <p class="footer-text" style="margin-top:8px;">
-    <span class="footer-gold">Made with ☕ in Erbil</span>
-  </p>
+  <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/logo.png?raw=true" alt="C-Star Coffee" class="ft-logo">
+  <div class="ft-soc">
+    <a href="https://wa.me/9647507851599" target="_blank" class="soc-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="soc-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.talabat.com/ar/iraq/c-star-coffee" target="_blank" class="soc-btn" aria-label="Talabat"><i class="fas fa-motorcycle"></i></a>
+    <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="soc-btn" aria-label="Location"><i class="fas fa-map-marker-alt"></i></a>
+  </div>
+  <div class="ft-copy t" data-k="ftCopy"></div>
 </footer>
 
-<!-- ===== JAVASCRIPT ===== -->
 <script>
-  // ---- LANGUAGE TOGGLE ----
-  let currentLang = 'ku';
-
-  function setLang(lang) {
-    currentLang = lang;
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
-
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.trim().toLowerCase().includes(lang === 'en' ? 'en' : 'کوردی'));
-    });
-
-    document.querySelectorAll('.ku-text').forEach(el => {
-      el.style.display = lang === 'ku' ? '' : 'none';
-    });
-    document.querySelectorAll('.en-text').forEach(el => {
-      el.style.display = lang === 'en' ? '' : 'none';
-    });
+/* ── Translations ──────────────────────────────── */
+const T = {
+  ku:{
+    nHome:'سەرەتا', nAbout:'دەربارەی ئێمە', nMenu:'مینیو', nContact:'پەیوەندی',
+    hBadge:'هەولێر ، عێراق',
+    hSub:'تامی ڕاستەقینەی قاوە لەگەڵ باشترین خواردنەوەکان لە هەولێر',
+    hMenu:'مینیو ببینە', hOrder:'ئێستا داواکاری بکە',
+    aLabel:'دەربارەی ئێمە',
+    aP1:'C-Star Coffee شوێنێکی تایبەتە بۆ ئەوانەی قاوەی باش و خواردنەوەی تازە دەزانن. لە شاری هەولێر بنیاتمان نراوە بۆ ئەوەی باشترین ئەزموونی قاوە پێتان بدەین.',
+    aP2:'هەموو خواردنەوەیەک بە دەستی پیشەکارەکانمان دروستدەکرێت بە بەکارهێنانی باشترین کەرەستەی تازە، بۆ ئەوەی کوالیتی بەرز لە هەموو جامێکدا دابین بکرێت.',
+    sItems:'جۆری خواردنەوە', sFresh:'تازە و سروشتی',
+    mLabel:'مینیوی ئێمە', mTitle:'چی دەتەوێت؟',
+    talTxt:'ئێستا دەتوانیت لەگەڵ تالابات داواکاری بکەیت',
+    talBtn:'داواکاری لە تالابات', orderTal:'داواکاری لە تالابات',
+    cAll:'هەمووی', cHot:'☕ گەرم', cCold:'🧊 سارد', cSmo:'🥤 سمووتی',
+    cTea:'🍵 چای سارد', cJus:'🍊 ئاوی تازە', cMilk:'🥛 میلکشێک',
+    cMoj:'🍃 مۆجیتۆ', cCake:'🍰 کێک',
+    ctLabel:'پەیوەندی', ctTitle:'دەستت پێبگرن',
+    ctWa:'واتساپ و تەلەفۆن', ctLoc:'شوێن', ctLocV:'هەولێری نوێ، هەولێر، عێراق',
+    ftCopy:'© 2025 C-Star Coffee — هەموو مافەکان پارێزراون',
+    catNames:{hot:'گەرم',cold:'سارد',smo:'سمووتی',tea:'چای سارد',jus:'ئاوی تازە',milk:'میلکشێک',moj:'مۆجیتۆ',cake:'کێک'}
+  },
+  ar:{
+    nHome:'الرئيسية', nAbout:'عنّا', nMenu:'القائمة', nContact:'تواصل معنا',
+    hBadge:'أربيل ، العراق',
+    hSub:'اكتشف أجمل نكهات القهوة والمشروبات الطازجة في أربيل',
+    hMenu:'شاهد القائمة', hOrder:'اطلب الآن',
+    aLabel:'عن المقهى',
+    aP1:'C-Star Coffee وجهة لمحبّي القهوة الفاخرة والمشروبات الطازجة. تأسّسنا في مدينة أربيل لنقدّم لك أفضل تجربة مقهى على الإطلاق.',
+    aP2:'كلّ مشروب يُعدّ بعناية فائقة من قِبَل متخصصينا باستخدام أجود المكوّنات الطازجة لضمان أعلى مستويات الجودة في كلّ رشفة.',
+    sItems:'نوع من المشروبات', sFresh:'طازج وطبيعي',
+    mLabel:'قائمتنا', mTitle:'ماذا تتناول اليوم؟',
+    talTxt:'اطلب مشروبك المفضّل بسهولة عبر تطبيق طلبات',
+    talBtn:'اطلب عبر طلبات', orderTal:'اطلب عبر طلبات',
+    cAll:'الكل', cHot:'☕ ساخنة', cCold:'🧊 باردة', cSmo:'🥤 سموذي',
+    cTea:'🍵 شاي مثلج', cJus:'🍊 عصائر', cMilk:'🥛 ميلك شيك',
+    cMoj:'🍃 موهيتو', cCake:'🍰 حلويات',
+    ctLabel:'تواصل معنا', ctTitle:'ابقَ على تواصل',
+    ctWa:'واتساب وهاتف', ctLoc:'الموقع', ctLocV:'هولير الجديدة، أربيل، العراق',
+    ftCopy:'© 2025 C-Star Coffee — جميع الحقوق محفوظة',
+    catNames:{hot:'ساخنة',cold:'باردة',smo:'سموذي',tea:'شاي مثلج',jus:'عصائر',milk:'ميلك شيك',moj:'موهيتو',cake:'حلويات'}
+  },
+  en:{
+    nHome:'Home', nAbout:'About', nMenu:'Menu', nContact:'Contact',
+    hBadge:'Erbil, Iraq',
+    hSub:'Experience the finest coffee and freshest drinks in Erbil',
+    hMenu:'View Menu', hOrder:'Order Now',
+    aLabel:'About Us',
+    aP1:"C-Star Coffee is Erbil's destination for exceptional coffee and freshly crafted drinks. Founded with passion, we bring you an unforgettable café experience in the heart of the city.",
+    aP2:'Every drink is carefully prepared by our expert baristas using only the finest fresh ingredients, ensuring quality and flavor in every single sip.',
+    sItems:'Drink Varieties', sFresh:'Fresh & Natural',
+    mLabel:'Our Menu', mTitle:'What Are You Having?',
+    talTxt:'Order your favorites conveniently through Talabat delivery',
+    talBtn:'Order on Talabat', orderTal:'Order on Talabat',
+    cAll:'All', cHot:'☕ Hot', cCold:'🧊 Cold', cSmo:'🥤 Smoothies',
+    cTea:'🍵 Iced Tea', cJus:'🍊 Juices', cMilk:'🥛 Milkshakes',
+    cMoj:'🍃 Mojito', cCake:'🍰 Cakes',
+    ctLabel:'Get In Touch', ctTitle:'Find Us',
+    ctWa:'WhatsApp & Phone', ctLoc:'Location', ctLocV:'Hawleri Nwe, Erbil, Iraq',
+    ftCopy:'© 2025 C-Star Coffee — All Rights Reserved',
+    catNames:{hot:'Hot',cold:'Cold',smo:'Smoothie',tea:'Iced Tea',jus:'Juice',milk:'Milkshake',moj:'Mojito',cake:'Cake'}
   }
+};
 
-  // ---- MENU FILTER ----
-  function filterMenu(cat, btn) {
-    // Update active button
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+/* ── Menu Data ─────────────────────────────────── */
+const BASE = 'https://github.com/hama-tech2/cstar-coffee/blob/main/';
+const items = [
+  {c:'hot', img:'mocha.jpg',
+   n:{ku:'موچا',ar:'موكا',en:'Mocha'},
+   d:{ku:'ئێسپرێسۆ، پوودەری کاکاۆ، شیر و قایمەی خراپکراو',ar:'إسبريسو، مسحوق الكاكاو، حليب وكريمة مخفوقة',en:'Espresso, cocoa powder, milk and whipped cream'},
+   p:'5,000'},
+  {c:'hot', img:'latte.jpg',
+   n:{ku:'لاتێ',ar:'لاتيه',en:'Latte'},
+   d:{ku:'ئێسپرێسۆ، شیری گەرمکراو و شەکر',ar:'إسبريسو، حليب مبخر وسكر',en:'Espresso, steamed milk and sugar'},
+   p:'4,500'},
+  {c:'cold', img:'matcha.jpg',
+   n:{ku:'ماچا لاتێ',ar:'ماتشا لاتيه',en:'Matcha Latte'},
+   d:{ku:'چای سەوزی ژاپۆنی، شیری گوێزی هیندستان و بەفر',ar:'شاي أخضر ياباني، حليب جوز الهند وثلج',en:'Japanese green tea, coconut milk and ice'},
+   p:'5,000'},
+  {c:'cold', img:'icemocha.jpg',
+   n:{ku:'ئایس موچا',ar:'موكا بارد',en:'Iced Mocha'},
+   d:{ku:'ئێسپرێسۆ، پوودەری کاکاۆ، شیر، بەفر و قایمە',ar:'إسبريسو، كاكاو، حليب، ثلج وكريمة',en:'Espresso, cocoa powder, milk, ice and whipped cream'},
+   p:'5,000'},
+  {c:'smo', img:'berrymix.jpg',
+   n:{ku:'بێری مکس',ar:'سموذي التوت المشكل',en:'Berry Mix Smoothie'},
+   d:{ku:'تێکەڵەی بلاکبێری، بلووبێری و توێ فرەنگی',ar:'مزيج من التوت الأسود، الأزرق والفراولة',en:'Blackberries, blueberries and strawberries blend'},
+   p:'5,000'},
+  {c:'smo', img:'mango.jpg',
+   n:{ku:'سمووتی مانگۆ',ar:'سموذي المانجو',en:'Mango Smoothie'},
+   d:{ku:'مانگۆ، ئاو، بەفر و شیرینکەرەکان',ar:'مانجو، ماء، ثلج ومحليات',en:'Mango, water, ice and sweeteners'},
+   p:'5,000'},
+  {c:'tea', img:'Iced%20tea%20with%20lemon.jpg',
+   n:{ku:'چای سارد بە لیمۆ',ar:'شاي مثلج بالليمون',en:'Iced Tea with Lemon'},
+   d:{ku:'چای سارد شیرینکراو بە تامی لیمۆ',ar:'شاي مثلج محلى بنكهة الليمون',en:'Sweetened iced tea with lemon flavor'},
+   p:'5,000'},
+  {c:'tea', img:'Iced-tea-with-lemon.jpg',
+   n:{ku:'چای سارد بە خۆخ',ar:'شاي مثلج بالخوخ',en:'Peach Iced Tea'},
+   d:{ku:'چای سارد شیرینکراو بە تامی خۆخ',ar:'شاي مثلج محلى بنكهة الخوخ',en:'Sweetened peach-flavored iced tea'},
+   p:'5,000'},
+  {c:'jus', img:'Mango-juice.jpg',
+   n:{ku:'ئاوی مانگۆ',ar:'عصير المانجو',en:'Mango Juice'},
+   d:{ku:'مانگۆ، ئاو و شیرینکەرەکان',ar:'مانجو، ماء ومحليات',en:'Mango, water and sweeteners'},
+   p:'5,000'},
+  {c:'jus', img:'strawberry-juice.jpg',
+   n:{ku:'ئاوی توێ فرەنگی',ar:'عصير الفراولة',en:'Strawberry Juice'},
+   d:{ku:'توێ فرەنگی تازە، ئاو و شیرینکەرەکان',ar:'فراولة طازجة، ماء ومحليات',en:'Fresh strawberries, water and sweeteners'},
+   p:'5,000'},
+  {c:'milk', img:'strawberry-juice.jpg',
+   n:{ku:'میلکشێکی توێ فرەنگی',ar:'ميلك شيك الفراولة',en:'Strawberry Milkshake'},
+   d:{ku:'توێ فرەنگی، دۆنگەی توێ فرەنگی، شیر لەگەڵ قایمە',ar:'فراولة، آيس كريم فراولة، حليب مع كريمة',en:'Strawberries, strawberry ice cream, milk served with cream'},
+   p:'6,000'},
+  {c:'milk', img:'Nutella.jpg',
+   n:{ku:'میلکشێکی نوتێلا',ar:'ميلك شيك نوتيلا',en:'Nutella Milkshake'},
+   d:{ku:'نوتێلا، دۆنگەی نوتێلا، شیر لەگەڵ قایمە',ar:'نوتيلا، آيس كريم نوتيلا، حليب مع كريمة',en:'Nutella, Nutella ice cream, milk served with cream'},
+   p:'6,000'},
+  {c:'moj', img:'classic.jpg',
+   n:{ku:'کلاسیک مۆجیتۆ',ar:'موهيتو كلاسيك',en:'Classic Mojito'},
+   d:{ku:'شەربەتی لیمۆ، گەڵای نەعناع، پارچەی لیمۆ، بەفر و ٧UP',ar:'شراب الليمون، نعناع، شرائح ليمون، ثلج و7UP',en:'Lemon syrup, mint leaves, lemon slices, ice and 7UP'},
+   p:'5,000'},
+  {c:'moj', img:'Mojito-mixed-berries.jpg',
+   n:{ku:'مۆجیتۆ بێری تێکەڵ',ar:'موهيتو التوت المشكل',en:'Mixed Berries Mojito'},
+   d:{ku:'شەربەتی بێری تێکەڵ، گەڵای نەعناع، پارچەی لیمۆ، بەفر و ٧UP',ar:'شراب التوت، نعناع، شرائح ليمون، ثلج و7UP',en:'Mixed berry syrup, mint leaves, lemon slices, ice and 7UP'},
+   p:'5,000'},
+  {c:'cake', img:'Carrot-cake.jpg',
+   n:{ku:'کێکی گەزەر',ar:'كيك الجزر',en:'Carrot Cake'},
+   d:{ku:'گەزەری ریشکراو، دارچین و گوێزی ئینگلیزی',ar:'جزر مبشور، قرفة وجوز مخبوز مع خليط الكيك',en:'Grated carrots, cinnamon and walnuts baked with cake mix'},
+   p:'5,000'},
+  {c:'cake', img:'pancakes.jpg',
+   n:{ku:'پانکێک',ar:'بان كيك',en:'Pancakes'},
+   d:{ku:'پانکێکی نەرم و خوێند لەگەڵ شەربەت',ar:'بان كيك طري يقدم مع شيرة',en:'Fluffy homestyle pancakes served with syrup'},
+   p:'4,000'}
+];
 
-    document.querySelectorAll('.menu-card').forEach(card => {
-      if (cat === 'all' || card.dataset.cat === cat) {
-        card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-  }
+/* ── State ─────────────────────────────────────── */
+let lang = 'ku', activeCat = 'all';
 
-  // ---- WHATSAPP ORDER ----
-  function orderWhatsApp(item, price) {
-    const msg = currentLang === 'ku'
-      ? `سڵاو! دەمەوێ داوای ${item} بکەم — ${price} — C-Star Coffee`
-      : `Hello! I'd like to order ${item} — ${price} — C-Star Coffee`;
-    // Replace 9647000000000 with real WhatsApp number
-    const url = `https://wa.me/9647000000000?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
-  }
-
-  // ---- SCROLL REVEAL ----
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.style.transitionDelay = `${(i % 6) * 0.07}s`;
-    observer.observe(el);
+/* ── setLang ───────────────────────────────────── */
+function setLang(l){
+  lang = l;
+  const b = document.body;
+  b.className = 'lang-'+l;
+  b.dir = l==='en'?'ltr':'rtl';
+  document.documentElement.lang = l==='ku'?'ckb':l;
+  document.querySelectorAll('.t[data-k]').forEach(el=>{
+    const v = T[l][el.dataset.k];
+    if(v !== undefined) el.textContent = v;
   });
+  document.querySelectorAll('.lang-btn').forEach(b2=>{
+    b2.classList.toggle('on', b2.dataset.l===l);
+  });
+  renderGrid(activeCat);
+}
+
+/* ── render ────────────────────────────────────── */
+function catLabel(c){
+  return T[lang].catNames[c]||c;
+}
+function renderGrid(cat){
+  const g = document.getElementById('menuGrid');
+  const list = cat==='all'? items : items.filter(i=>i.c===cat);
+  g.innerHTML = list.map((it,i)=>{
+    const delay = (i*0.04).toFixed(2);
+    return `<div class="card" style="animation-delay:${delay}s" onclick="lbOpen(${items.indexOf(it)})">
+      <div class="card-img">
+        <img src="${BASE}${it.img}?raw=true" alt="${it.n[lang]}" loading="lazy">
+        <div class="card-badge">${catLabel(it.c)}</div>
+        <div class="card-hover-layer"><div class="zoom-circle"><i class="fas fa-search-plus"></i></div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${it.n[lang]}</div>
+        <div class="card-desc">${it.d[lang]}</div>
+        <div class="card-foot">
+          <div class="card-price">${it.p} <sub>IQD</sub></div>
+          <a href="https://www.talabat.com/ar/iraq/c-star-coffee" target="_blank" class="card-order" onclick="event.stopPropagation()">
+            <i class="fas fa-motorcycle"></i>${T[lang].orderTal}
+          </a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── filter ────────────────────────────────────── */
+function filter(cat){
+  activeCat = cat;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.c===cat));
+  const g = document.getElementById('menuGrid');
+  g.style.cssText = 'opacity:0;transform:translateY(12px);transition:all .22s ease';
+  setTimeout(()=>{
+    renderGrid(cat);
+    g.style.cssText = 'opacity:1;transform:translateY(0);transition:all .22s ease';
+  },220);
+}
+
+/* ── Lightbox ──────────────────────────────────── */
+function lbOpen(idx){
+  const it = items[idx];
+  document.getElementById('lbImg').src = BASE+it.img+'?raw=true';
+  document.getElementById('lbImg').alt = it.n[lang];
+  document.getElementById('lbName').textContent = it.n[lang];
+  document.getElementById('lbDesc').textContent = it.d[lang];
+  document.getElementById('lbPrice').textContent = it.p+' IQD';
+  // update talabat button text
+  const talSpan = document.querySelector('#lb .t[data-k="orderTal"]');
+  if(talSpan) talSpan.textContent = T[lang].orderTal;
+  document.getElementById('lb').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function lbClose(e){
+  if(!e || e.target===document.getElementById('lb') || e.currentTarget.tagName==='BUTTON'){
+    document.getElementById('lb').classList.remove('on');
+    document.body.style.overflow='';
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lbClose()});
+
+/* ── Mobile Nav ────────────────────────────────── */
+function toggleMob(){
+  document.getElementById('mobNav').classList.toggle('open');
+  document.getElementById('ham').classList.toggle('open');
+}
+
+/* ── Nav scroll ────────────────────────────────── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('solid',scrollY>60);
+  const bg = document.getElementById('heroBg');
+  if(bg) bg.style.transform=`scale(1.12) translateY(${scrollY*.25}px)`;
+},{passive:true});
+
+/* ── Intersection observer ─────────────────────── */
+const obs = new IntersectionObserver(ents=>{
+  ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}});
+},{threshold:.1});
+document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+/* ── Init ──────────────────────────────────────── */
+setLang('ku');
 </script>
 </body>
 </html>
