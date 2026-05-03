@@ -1,0 +1,1538 @@
+inded<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C-Star Coffee — هەولێر</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== VARIABLES ===== */
+  :root {
+    --espresso: #0d0500;
+    --dark: #1a0a00;
+    --roast: #2c1503;
+    --mocha: #4a2308;
+    --caramel: #8b4513;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5e6d3;
+    --milk: #fdf6ee;
+    --white: #ffffff;
+    --text-muted: #a08060;
+    --font-en: 'Playfair Display', serif;
+    --font-ku: 'Tajawal', sans-serif;
+    --radius: 16px;
+    --shadow: 0 8px 40px rgba(0,0,0,0.5);
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ===== RESET ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-ku);
+    background: var(--espresso);
+    color: var(--cream);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ===== LANGUAGE TOGGLE ===== */
+  .lang-toggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+    display: flex;
+    gap: 6px;
+  }
+  .lang-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    border-radius: 50px;
+    font-family: var(--font-ku);
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--gold);
+    color: var(--espresso);
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(13,5,0,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: var(--font-en);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(201,168,76,0.4);
+  }
+  .nav-logo span { color: var(--cream); }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 30% 60%, rgba(139,69,19,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 20%, rgba(201,168,76,0.15) 0%, transparent 50%),
+      linear-gradient(135deg, #0d0500 0%, #2c1503 40%, #1a0a00 100%);
+  }
+  /* Coffee cup decorative circles */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    width: 350px; height: 350px;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* HERO IMAGE: Replace src below with your own photo */
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    opacity: 0.25;
+    /* Remove this display:none once you add a real image */
+    display: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    animation: fadeUp 1s ease both;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-title {
+    font-family: var(--font-en);
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .hero-title .star { color: var(--gold); }
+  .hero-subtitle-ku {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--gold-light);
+    font-weight: 300;
+    margin-bottom: 24px;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .hero-subtitle-en {
+    font-family: var(--font-en);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 40px;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: var(--gold);
+    color: var(--espresso);
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: var(--transition);
+    animation: fadeUp 1s 0.6s ease both;
+    box-shadow: 0 4px 30px rgba(201,168,76,0.4);
+  }
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(201,168,76,0.5);
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: bounce 2s infinite;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  /* ===== INFO BAR ===== */
+  .info-bar {
+    background: var(--roast);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 20px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--cream);
+  }
+  .info-icon {
+    width: 36px; height: 36px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .info-label { color: var(--text-muted); font-size: 11px; display: block; }
+  .info-value { font-weight: 600; color: var(--cream); }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 80px 24px; }
+  .section-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--font-en);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .section-title-ku {
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    color: var(--cream);
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  .section-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* ===== CATEGORIES ===== */
+  .categories { background: var(--dark); }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cat-card {
+    background: var(--roast);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: var(--radius);
+    padding: 24px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+    opacity: 0;
+    transition: var(--transition);
+  }
+  .cat-card:hover { 
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-emoji { font-size: 2rem; margin-bottom: 10px; display: block; }
+  .cat-name { font-size: 0.8rem; font-weight: 600; color: var(--cream); }
+  .cat-name-en { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* ===== MENU ===== */
+  .menu-section { background: var(--espresso); }
+  .menu-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+  .filter-btn {
+    padding: 8px 20px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 50px;
+    font-family: var(--font-ku);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--espresso);
+    font-weight: 700;
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .menu-card {
+    background: var(--roast);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+  }
+  .menu-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201,168,76,0.4);
+    box-shadow: var(--shadow);
+  }
+  .menu-card-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    background: var(--mocha);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: linear-gradient(135deg, var(--mocha), var(--roast));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+  }
+  .menu-card-img-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(13,5,0,0.5));
+  }
+  .menu-card-body { padding: 18px; }
+  .menu-card-cat {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .menu-card-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .menu-card-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    min-height: 40px;
+  }
+  .menu-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .menu-price {
+    font-family: var(--font-en);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .menu-price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #25D366;
+    color: white;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+  }
+  .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+
+  /* ===== REVIEWS ===== */
+  .reviews { background: var(--dark); }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .review-card {
+    background: var(--roast);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  .review-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px; right: 20px;
+    font-family: var(--font-en);
+    font-size: 8rem;
+    color: rgba(201,168,76,0.08);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .review-card:hover { border-color: rgba(201,168,76,0.4); }
+  .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 14px; }
+  .review-text {
+    font-size: 0.95rem;
+    color: var(--cream);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--caramel));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--espresso);
+    flex-shrink: 0;
+  }
+  .reviewer-name { font-weight: 600; font-size: 0.9rem; color: var(--white); }
+  .reviewer-date { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* ===== CONTACT ===== */
+  .contact { background: var(--espresso); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: start;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 24px; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .contact-icon {
+    width: 48px; height: 48px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .contact-item-label { font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .contact-item-value { font-size: 0.95rem; color: var(--cream); }
+  .map-link {
+    display: block;
+    background: var(--roast);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .map-link:hover { border-color: var(--gold); }
+  .map-placeholder { font-size: 3rem; margin-bottom: 12px; }
+  .map-cta-text { color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+  .map-address { color: var(--text-muted); font-size: 0.85rem; }
+  .social-links { display: flex; gap: 12px; margin-top: 24px; }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--transition);
+  }
+  .social-btn.whatsapp { background: #25D366; color: white; }
+  .social-btn.whatsapp:hover { background: #128C7E; }
+  .social-btn.phone { background: var(--gold); color: var(--espresso); }
+  .social-btn.phone:hover { background: var(--gold-light); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--espresso);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: var(--font-en);
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .footer-text { color: var(--text-muted); font-size: 0.85rem; }
+  .footer-gold { color: var(--gold); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-8px); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+    section { padding: 60px 16px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px; }
+    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .lang-toggle { top: 12px; left: 12px; }
+    .info-bar { flex-direction: column; gap: 12px; }
+    .social-links { flex-direction: column; }
+  }
+
+  /* ===== HIDDEN CLASS FOR FILTER ===== */
+  .menu-card.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('ku')">کوردی</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- Navbar -->
+<nav>
+  <div class="nav-logo">C<span>—</span>STAR</div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <!-- 
+    TO ADD YOUR OWN HERO IMAGE:
+    1. Upload a photo of your coffee shop to GitHub
+    2. Remove display:none from .hero-img in CSS
+    3. Change src="YOUR_IMAGE.jpg" below
+  -->
+  <img src="hero.jpg" alt="C-Star Coffee" class="hero-img">
+  <div class="hero-content">
+    <span class="hero-badge ku-text">هەولێر · ھەولێری نوێ</span>
+    <h1 class="hero-title">C<span class="star">★</span>STAR</h1>
+    <p class="hero-subtitle-ku ku-text">بەخۆشترین قاوەی هەولێر</p>
+    <p class="hero-subtitle-en en-text" style="display:none">The Finest Coffee in Erbil</p>
+    <a href="#menu" class="hero-cta">
+      <span class="ku-text">مینیوی ئێمە ببینە</span>
+      <span class="en-text" style="display:none">Explore Our Menu</span>
+      ☕
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <span class="ku-text">داخستن</span>
+    <span class="en-text" style="display:none">scroll</span>
+  </div>
+</section>
+
+<!-- ===== INFO BAR ===== -->
+<div class="info-bar">
+  <div class="info-item">
+    <div class="info-icon">📍</div>
+    <div>
+      <span class="info-label ku-text">ناونیشان</span>
+      <span class="info-label en-text" style="display:none">Location</span>
+      <span class="info-value ku-text">هەولێری نوێ، هەولێر</span>
+      <span class="info-value en-text" style="display:none">Hawleri Nwe, Erbil</span>
+    </div>
+  </div>
+  <div class="info-item">
+    <div class="info-icon">⭐</div>
+    <div>
+      <span class="info-label ku-text">هەڵسەنگاندن</span>
+      <span class="info-label en-text" style="display:none">Rating</span>
+      <span class="info-value">5.0 / 5</span>
+    </div>
+  </div>
+  <div class="info-item">
+    <div class="info-icon">💰</div>
+    <div>
+      <span class="info-label ku-text">نرخ بۆ کەسێک</span>
+      <span class="info-label en-text" style="display:none">Price per person</span>
+      <span class="info-value">5,000 — 10,000 IQD</span>
+    </div>
+  </div>
+  <div class="info-item">
+    <div class="info-icon">🛵</div>
+    <div>
+      <span class="info-label ku-text">گەیاندن</span>
+      <span class="info-label en-text" style="display:none">Delivery</span>
+      <span class="info-value">Talabat ✓</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="categories" id="categories">
+  <div class="section-header reveal">
+    <span class="section-tag">MENU</span>
+    <h2 class="section-title">Our Categories</h2>
+    <p class="section-title-ku ku-text">جۆرەکانی مینیو</p>
+    <p class="section-title-ku en-text" style="display:none">Browse by Category</p>
+    <div class="section-line"></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card reveal" onclick="filterMenu('hot')">
+      <span class="cat-emoji">☕</span>
+      <div class="cat-name ku-text">خواردنەوەی گەرم</div>
+      <div class="cat-name en-text" style="display:none">Hot Drinks</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('cold')">
+      <span class="cat-emoji">🧊</span>
+      <div class="cat-name ku-text">خواردنەوەی سارد</div>
+      <div class="cat-name en-text" style="display:none">Cold Drinks</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('smoothie')">
+      <span class="cat-emoji">🥤</span>
+      <div class="cat-name ku-text">سموتی</div>
+      <div class="cat-name en-text" style="display:none">Smoothie</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('juice')">
+      <span class="cat-emoji">🍊</span>
+      <div class="cat-name ku-text">ئاو میوە</div>
+      <div class="cat-name en-text" style="display:none">Fresh Juices</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('milkshake')">
+      <span class="cat-emoji">🍦</span>
+      <div class="cat-name ku-text">میلک شەیک</div>
+      <div class="cat-name en-text" style="display:none">Milkshake</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('mojito')">
+      <span class="cat-emoji">🍹</span>
+      <div class="cat-name ku-text">موهیتو</div>
+      <div class="cat-name en-text" style="display:none">Mojito</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('icedtea')">
+      <span class="cat-emoji">🍵</span>
+      <div class="cat-name ku-text">چای سارد</div>
+      <div class="cat-name en-text" style="display:none">Iced Tea</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('cake')">
+      <span class="cat-emoji">🍰</span>
+      <div class="cat-name ku-text">کەیک</div>
+      <div class="cat-name en-text" style="display:none">Cakes</div>
+    </div>
+    <div class="cat-card reveal" onclick="filterMenu('all')">
+      <span class="cat-emoji">✨</span>
+      <div class="cat-name ku-text">هەموو</div>
+      <div class="cat-name en-text" style="display:none">All</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="menu-section" id="menu">
+  <div class="section-header reveal">
+    <span class="section-tag">DRINKS & FOOD</span>
+    <h2 class="section-title">Our Menu</h2>
+    <p class="section-title-ku ku-text">مینیوی ئێمە</p>
+    <p class="section-title-ku en-text" style="display:none">Everything We Serve</p>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="menu-filter">
+    <button class="filter-btn active" onclick="filterMenu('all',this)">
+      <span class="ku-text">هەموو</span><span class="en-text" style="display:none">All</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('hot',this)">
+      <span class="ku-text">گەرم</span><span class="en-text" style="display:none">Hot</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('cold',this)">
+      <span class="ku-text">سارد</span><span class="en-text" style="display:none">Cold</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('smoothie',this)">
+      <span class="ku-text">سموتی</span><span class="en-text" style="display:none">Smoothie</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('juice',this)">
+      <span class="ku-text">ئاو میوە</span><span class="en-text" style="display:none">Juice</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('milkshake',this)">
+      <span class="ku-text">شەیک</span><span class="en-text" style="display:none">Shake</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('mojito',this)">
+      <span class="ku-text">موهیتو</span><span class="en-text" style="display:none">Mojito</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('icedtea',this)">
+      <span class="ku-text">چای سارد</span><span class="en-text" style="display:none">Iced Tea</span>
+    </button>
+    <button class="filter-btn" onclick="filterMenu('cake',this)">
+      <span class="ku-text">کەیک</span><span class="en-text" style="display:none">Cakes</span>
+    </button>
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+    <!-- HOT DRINKS -->
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">☕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Mocha</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، پووری کاکاۆ، شیر و کرێمی وشک</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, cocoa powder, milk and whipped cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Mocha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">☕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Cappuccino</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری گەرم و کەفی شیر</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, steamed milk and milk foam</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Cappuccino','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">🫘</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Americano</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ و ئاو</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso and water</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">4,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Americano','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">☕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Latte</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری گەرم و شەکر</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, steamed milk and sugar</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">4,500 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Latte','4,500 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">☕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Spanish Latte</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، شیری شیرین کراو و شیری شیرین کۆندێنس</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, evaporated milk and sweetened condensed milk</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Spanish Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">🍵</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Matcha</h3>
+        <p class="menu-card-desc ku-text">چای کەوی جاپۆنی، شیری کۆکۆنەت و یەخ</p>
+        <p class="menu-card-desc en-text" style="display:none">Japanese green tea, coconut milk and ice</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Matcha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">🫖</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Turkish Coffee</h3>
+        <p class="menu-card-desc ku-text">قاوەی تورکی و ئاو</p>
+        <p class="menu-card-desc en-text" style="display:none">Turkish coffee and water</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Turkish Coffee','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">☕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Qazvan Coffee</h3>
+        <p class="menu-card-desc ku-text">قاوەی بێ کافین کراو لە دانەی پستەی برژاندراو</p>
+        <p class="menu-card-desc en-text" style="display:none">Decaffeinated coffee from roasted pistachio beans</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Qazvan Coffee','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="hot">
+      <div class="menu-card-img-placeholder">⚡</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی گەرم</span>
+        <span class="menu-card-cat en-text" style="display:none">Hot Drinks</span>
+        <h3 class="menu-card-name">Espresso</h3>
+        <p class="menu-card-desc ku-text">دانەی قاوەی ئێسپریسۆی خواردراو و ئاو</p>
+        <p class="menu-card-desc en-text" style="display:none">Ground espresso coffee beans and water</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">3,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Espresso','3,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLD DRINKS -->
+    <div class="menu-card reveal" data-cat="cold">
+      <div class="menu-card-img-placeholder">🧊</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
+        <h3 class="menu-card-name">Ice Americano</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، یەخ و ئاو</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, ice and water</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Ice Americano','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cold">
+      <div class="menu-card-img-placeholder">🧊</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
+        <h3 class="menu-card-name">Iced Latte</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، یەخ، شیری گەرم و شەکر</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, ice, steamed milk and sugar</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cold">
+      <div class="menu-card-img-placeholder">🍫</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
+        <h3 class="menu-card-name">Iced Mocha</h3>
+        <p class="menu-card-desc ku-text">ئێسپریسۆ، پووری کاکاۆ، شیر، یەخ و کرێمی وشک</p>
+        <p class="menu-card-desc en-text" style="display:none">Espresso, cocoa powder, milk, ice and whipped cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Mocha','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cold">
+      <div class="menu-card-img-placeholder">🍵</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">خواردنەوەی سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Cold Drinks</span>
+        <h3 class="menu-card-name">Matcha Latte (Iced)</h3>
+        <p class="menu-card-desc ku-text">چای کەوی جاپۆنی، شیری کۆکۆنەت و یەخ</p>
+        <p class="menu-card-desc en-text" style="display:none">Japanese green tea, coconut milk and ice</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Matcha Latte','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SMOOTHIE -->
+    <div class="menu-card reveal" data-cat="smoothie">
+      <div class="menu-card-img-placeholder">🥭</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">سموتی</span>
+        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
+        <h3 class="menu-card-name">Mango Smoothie</h3>
+        <p class="menu-card-desc ku-text">مەنگۆ، ئاو، یەخ و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Mango, water, ice and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Mango Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="smoothie">
+      <div class="menu-card-img-placeholder">🍓</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">سموتی</span>
+        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
+        <h3 class="menu-card-name">Strawberry Smoothie</h3>
+        <p class="menu-card-desc ku-text">فراولە، ئاو، یەخ و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Strawberries, water, ice and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="smoothie">
+      <div class="menu-card-img-placeholder">🍍</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">سموتی</span>
+        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
+        <h3 class="menu-card-name">Pineapple Smoothie</h3>
+        <p class="menu-card-desc ku-text">ئەناناس، ئاو، یەخ و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Pineapple, water, ice and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Pineapple Smoothie','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="smoothie">
+      <div class="menu-card-img-placeholder">🫐</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">سموتی</span>
+        <span class="menu-card-cat en-text" style="display:none">Smoothie</span>
+        <h3 class="menu-card-name">Berry Mix</h3>
+        <p class="menu-card-desc ku-text">ترێی ڕەش، بلووبێری و فراولە</p>
+        <p class="menu-card-desc en-text" style="display:none">Blackberries, blueberries and strawberries blend</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Berry Mix','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRESH JUICES -->
+    <div class="menu-card reveal" data-cat="juice">
+      <div class="menu-card-img-placeholder">🍊</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
+        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
+        <h3 class="menu-card-name">Orange Juice</h3>
+        <p class="menu-card-desc ku-text">پرتەقاڵی تازە، ئاو و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Fresh oranges, water and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Orange Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="juice">
+      <div class="menu-card-img-placeholder">🥭</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
+        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
+        <h3 class="menu-card-name">Mango Juice</h3>
+        <p class="menu-card-desc ku-text">مەنگۆ، ئاو و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Mango, water and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Mango Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="juice">
+      <div class="menu-card-img-placeholder">🍓</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">ئاو میوەی تازە</span>
+        <span class="menu-card-cat en-text" style="display:none">Fresh Juices</span>
+        <h3 class="menu-card-name">Strawberry Juice</h3>
+        <p class="menu-card-desc ku-text">فراولەی تازە، ئاو و شیرین کەر</p>
+        <p class="menu-card-desc en-text" style="display:none">Fresh strawberries, water and sweeteners</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Juice','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MILKSHAKE -->
+    <div class="menu-card reveal" data-cat="milkshake">
+      <div class="menu-card-img-placeholder">🍦</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">میلک شەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
+        <h3 class="menu-card-name">Vanilla Milkshake</h3>
+        <p class="menu-card-desc ku-text">ڤانیلیا، دۆنداورمای ڤانیلیا، شیر و کرێم</p>
+        <p class="menu-card-desc en-text" style="display:none">Vanilla, vanilla ice cream, milk served with cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">6,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Vanilla Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="milkshake">
+      <div class="menu-card-img-placeholder">🍪</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">میلک شەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
+        <h3 class="menu-card-name">Lotus Milkshake</h3>
+        <p class="menu-card-desc ku-text">لۆتەس، دۆنداورمای لۆتەس، شیر و کرێم</p>
+        <p class="menu-card-desc en-text" style="display:none">Lotus spread, Lotus ice cream, milk served with cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">6,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Lotus Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="milkshake">
+      <div class="menu-card-img-placeholder">🍫</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">میلک شەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
+        <h3 class="menu-card-name">Nutella Milkshake</h3>
+        <p class="menu-card-desc ku-text">نوتێلا، دۆنداورمای نوتێلا، شیر و کرێم</p>
+        <p class="menu-card-desc en-text" style="display:none">Nutella, Nutella ice cream, milk served with cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">6,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Nutella Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="milkshake">
+      <div class="menu-card-img-placeholder">🍦</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">میلک شەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Milkshake</span>
+        <h3 class="menu-card-name">Pistachio Milkshake</h3>
+        <p class="menu-card-desc ku-text">سۆسی پستە، دۆنداورمای پستە، شیر و کرێمی پستەی تیکێڵ</p>
+        <p class="menu-card-desc en-text" style="display:none">Pistachio sauce, pistachio ice cream, milk served with cream and pistachio pieces</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">6,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Pistachio Milkshake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOJITO -->
+    <div class="menu-card reveal" data-cat="mojito">
+      <div class="menu-card-img-placeholder">🍹</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">موهیتو</span>
+        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
+        <h3 class="menu-card-name">Classic Mojito</h3>
+        <p class="menu-card-desc ku-text">سیرووپی لیمۆ، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
+        <p class="menu-card-desc en-text" style="display:none">Lemon syrup, mint leaves, lemon slices, ice and 7UP</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Classic Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="mojito">
+      <div class="menu-card-img-placeholder">🍓</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">موهیتو</span>
+        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
+        <h3 class="menu-card-name">Strawberry Mojito</h3>
+        <p class="menu-card-desc ku-text">سیرووپی فراولە، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
+        <p class="menu-card-desc en-text" style="display:none">Strawberry syrup, mint leaves, lemon slices, ice and 7UP</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Strawberry Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="mojito">
+      <div class="menu-card-img-placeholder">🫐</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">موهیتو</span>
+        <span class="menu-card-cat en-text" style="display:none">Mojito</span>
+        <h3 class="menu-card-name">Berry Mojito</h3>
+        <p class="menu-card-desc ku-text">سیرووپی توتفرەنگی تێکەڵ، گیانی نینۆک، کەلووەی لیمۆ، یەخ و 7UP</p>
+        <p class="menu-card-desc en-text" style="display:none">Mixed berry syrup, mint leaves, lemon slices, ice and 7UP</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Berry Mojito','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ICED TEA -->
+    <div class="menu-card reveal" data-cat="icedtea">
+      <div class="menu-card-img-placeholder">🍵</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">چای سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
+        <h3 class="menu-card-name">Iced Tea</h3>
+        <p class="menu-card-desc ku-text">چای سارد</p>
+        <p class="menu-card-desc en-text" style="display:none">Classic iced tea</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="icedtea">
+      <div class="menu-card-img-placeholder">🍋</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">چای سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
+        <h3 class="menu-card-name">Lemon Iced Tea</h3>
+        <p class="menu-card-desc ku-text">چای سارد شیرین کراو لەگەڵ تامی لیمۆ</p>
+        <p class="menu-card-desc en-text" style="display:none">Sweetened iced tea with lemon flavor</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Lemon Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="icedtea">
+      <div class="menu-card-img-placeholder">🍑</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">چای سارد</span>
+        <span class="menu-card-cat en-text" style="display:none">Iced Tea</span>
+        <h3 class="menu-card-name">Peach Iced Tea</h3>
+        <p class="menu-card-desc ku-text">چای سارد شیرین کراو لەگەڵ تامی خووخ</p>
+        <p class="menu-card-desc en-text" style="display:none">Sweetened peach-flavored iced tea</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Peach Iced Tea','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAKES -->
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🎂</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">San Sebastian</h3>
+        <p class="menu-card-desc ku-text">کەیکی سان سیباستیانی کرێمی لەگەڵ سۆسی چۆکلاتا</p>
+        <p class="menu-card-desc en-text" style="display:none">Creamy San Sebastian cake served with chocolate sauce</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">6,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('San Sebastian Cake','6,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🍰</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Lotus Cheesecake</h3>
+        <p class="menu-card-desc ku-text">بیسکیتی خوردکراو، کرێمی پنیر شیرین و سۆسی لۆتەس</p>
+        <p class="menu-card-desc en-text" style="display:none">Crushed biscuits, sweet cream cheese and Lotus sauce</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Lotus Cheesecake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🧁</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Tiramisu</h3>
+        <p class="menu-card-desc ku-text">چەند چینێک بیسکیت، کرێمی ماسکارپۆنی و پووری کاکاۆ</p>
+        <p class="menu-card-desc en-text" style="display:none">Layers of biscuits, mascarpone cream, sugar and coffee, decorated with cocoa powder</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Tiramisu','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🍫</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Black Velvet</h3>
+        <p class="menu-card-desc ku-text">چینەکانی کەیک پڕکراوە لە کرێمی چۆکلاتا</p>
+        <p class="menu-card-desc en-text" style="display:none">Layers of cake filled with chocolate cream</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Black Velvet Cake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🥕</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Carrot Cake</h3>
+        <p class="menu-card-desc ku-text">زردەک خوردکراو، دارچین و گوێزی ئینگلیزی لەگەڵ خمیری کەیک</p>
+        <p class="menu-card-desc en-text" style="display:none">Grated carrots, cinnamon and walnuts baked with cake mix</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">5,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Carrot Cake','5,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🥐</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Croissant</h3>
+        <p class="menu-card-desc ku-text">چینەکانی کرواسان ترد</p>
+        <p class="menu-card-desc en-text" style="display:none">Crispy croissant layers</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">4,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Croissant','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="cake">
+      <div class="menu-card-img-placeholder">🥞</div>
+      <div class="menu-card-body">
+        <span class="menu-card-cat ku-text">کەیک</span>
+        <span class="menu-card-cat en-text" style="display:none">Cakes</span>
+        <h3 class="menu-card-name">Pancakes</h3>
+        <p class="menu-card-desc ku-text">پانکەیک تازە</p>
+        <p class="menu-card-desc en-text" style="display:none">Fresh fluffy pancakes</p>
+        <div class="menu-card-footer">
+          <div class="menu-price">4,000 <span>IQD</span></div>
+          <button class="whatsapp-btn" onclick="orderWhatsApp('Pancakes','4,000 IQD')">📲 <span class="ku-text">داواکردن</span><span class="en-text" style="display:none">Order</span></button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end menu-grid -->
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="reviews" id="reviews">
+  <div class="section-header reveal">
+    <span class="section-tag">REVIEWS</span>
+    <h2 class="section-title">What People Say</h2>
+    <p class="section-title-ku ku-text">بیروڕای کەسانی خۆشەویست</p>
+    <p class="section-title-ku en-text" style="display:none">Our Happy Customers</p>
+    <div class="section-line"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text">"Nice spot for coffee with a chill, comfortable vibe. The coffee is well made, the space feels welcoming, and it's an easy place to relax or catch up with someone."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">R</div>
+        <div>
+          <div class="reviewer-name">Rawaz Sherwan</div>
+          <div class="reviewer-date ku-text">٢ مانگ پێش ئێستا</div>
+          <div class="reviewer-date en-text" style="display:none">2 months ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text ku-text">"زۆر خۆشە. قاوەی باشی هەیە، شوێنەکە هەستی خۆشی دەدات."</p>
+      <p class="review-text en-text" style="display:none">"Very nice. Good coffee, the place has a great vibe."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">S</div>
+        <div>
+          <div class="reviewer-name">Shex Malik</div>
+          <div class="reviewer-date ku-text">٣ مانگ پێش ئێستا</div>
+          <div class="reviewer-date en-text" style="display:none">3 months ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text ku-text">"نرخ بۆ کەسێک نێوان ٥ تا ١٠ هەزار دینار. بەهای باشە بۆ ئەم کوالیتییە."</p>
+      <p class="review-text en-text" style="display:none">"Price per person 5k–10k IQD. Great value for this quality."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">S</div>
+        <div>
+          <div class="reviewer-name">Sipa</div>
+          <div class="reviewer-date ku-text">٣ مانگ پێش ئێستا · ١٦ هەڵسەنگاندن</div>
+          <div class="reviewer-date en-text" style="display:none">3 months ago · 16 reviews</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="section-header reveal">
+    <span class="section-tag">FIND US</span>
+    <h2 class="section-title">Visit Us</h2>
+    <p class="section-title-ku ku-text">بمەوە سەردانمان بکە</p>
+    <p class="section-title-ku en-text" style="display:none">Come Find Us</p>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-item reveal">
+        <div class="contact-icon">📍</div>
+        <div>
+          <span class="contact-item-label ku-text">ناونیشان</span>
+          <span class="contact-item-label en-text" style="display:none">Address</span>
+          <span class="contact-item-value ku-text">636G+GRR، هەولێری نوێ، هەولێر، عێراق</span>
+          <span class="contact-item-value en-text" style="display:none">636G+GRR, Hawleri Nwe, Erbil, Iraq</span>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">⭐</div>
+        <div>
+          <span class="contact-item-label ku-text">هەڵسەنگاندنی گووگڵ</span>
+          <span class="contact-item-label en-text" style="display:none">Google Rating</span>
+          <span class="contact-item-value">5.0 ★★★★★</span>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">🛵</div>
+        <div>
+          <span class="contact-item-label ku-text">گەیاندن</span>
+          <span class="contact-item-label en-text" style="display:none">Delivery</span>
+          <span class="contact-item-value ku-text">بەردەستە لەسەر Talabat</span>
+          <span class="contact-item-value en-text" style="display:none">Available on Talabat</span>
+        </div>
+      </div>
+      <div class="social-links reveal">
+        <!-- 
+          IMPORTANT: Replace the href values below with:
+          - WhatsApp: https://wa.me/9647XXXXXXXXX  (replace with real phone)
+          - Phone: tel:+9647XXXXXXXXX
+        -->
+        <a href="https://wa.me/9647000000000" class="social-btn whatsapp" target="_blank">
+          📲 <span class="ku-text">واتساپ</span><span class="en-text" style="display:none">WhatsApp</span>
+        </a>
+        <a href="tel:+9647000000000" class="social-btn phone">
+          📞 <span class="ku-text">پەیوەندی</span><span class="en-text" style="display:none">Call Us</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="https://maps.app.goo.gl/pMSW5TDqaJNu9KCn9" target="_blank" class="map-link reveal">
+      <div class="map-placeholder">🗺️</div>
+      <p class="map-cta-text ku-text">کرتە بکە بۆ کردنەوەی نەخشە</p>
+      <p class="map-cta-text en-text" style="display:none">Tap to Open Google Maps</p>
+      <p class="map-address">هەولێری نوێ، هەولێر · C-Star Coffee</p>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== */-->
+<footer>
+  <div class="footer-logo">C<span style="color:var(--cream)">★</span>STAR</div>
+  <p class="footer-text">
+    <span class="ku-text">© ٢٠٢٤ C-Star Coffee — هەولێری نوێ، هەولێر</span>
+    <span class="en-text" style="display:none">© 2024 C-Star Coffee — Hawleri Nwe, Erbil</span>
+  </p>
+  <p class="footer-text" style="margin-top:8px;">
+    <span class="footer-gold">Made with ☕ in Erbil</span>
+  </p>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // ---- LANGUAGE TOGGLE ----
+  let currentLang = 'ku';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.trim().toLowerCase().includes(lang === 'en' ? 'en' : 'کوردی'));
+    });
+
+    document.querySelectorAll('.ku-text').forEach(el => {
+      el.style.display = lang === 'ku' ? '' : 'none';
+    });
+    document.querySelectorAll('.en-text').forEach(el => {
+      el.style.display = lang === 'en' ? '' : 'none';
+    });
+  }
+
+  // ---- MENU FILTER ----
+  function filterMenu(cat, btn) {
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('.menu-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  // ---- WHATSAPP ORDER ----
+  function orderWhatsApp(item, price) {
+    const msg = currentLang === 'ku'
+      ? `سڵاو! دەمەوێ داوای ${item} بکەم — ${price} — C-Star Coffee`
+      : `Hello! I'd like to order ${item} — ${price} — C-Star Coffee`;
+    // Replace 9647000000000 with real WhatsApp number
+    const url = `https://wa.me/9647000000000?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  // ---- SCROLL REVEAL ----
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 6) * 0.07}s`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
