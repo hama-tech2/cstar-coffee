@@ -3,758 +3,859 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="C-Star Coffee — Hawleri Nwe, Erbil">
+<meta name="description" content="C★STAR Coffee — Premium Coffee Experience in Erbil">
 <title>C★STAR Coffee</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-/* ══════════════════════════════════════════
-   TOKENS
-══════════════════════════════════════════ */
-:root{
-  --bg:     #0c0804;
-  --bg2:    #130b05;
-  --card:   #191008;
-  --card2:  #201408;
-  --gold:   #c8892e;
-  --gold2:  #e8b86d;
-  --cream:  #f0e4cc;
-  --text:   #c0a880;
-  --muted:  #7a6040;
-  --border: rgba(200,137,46,.14);
-  --tal:    #ff6000;
-  --nav:    62px;
-  --r:      14px;
-  --ease:   cubic-bezier(.4,0,.2,1);
-  --shadow: 0 24px 60px rgba(0,0,0,.55);
+/* ══════════════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════════════ */
+:root {
+  /* Core palette */
+  --ink:      #080502;
+  --bg:       #0d0805;
+  --bg2:      #140b06;
+  --surface:  #1c1008;
+  --surface2: #241508;
+
+  /* Gold */
+  --gold:     #c4862a;
+  --gold2:    #e0aa58;
+  --gold3:    #f0cd8a;
+
+  /* Text */
+  --cream:    #f0e4cc;
+  --text:     #b89870;
+  --muted:    #6e5538;
+
+  /* Utility */
+  --border:   rgba(196,134,42,.15);
+  --tal:      #ff6200;
+  --green:    #25d366;
+
+  /* Layout */
+  --nav-h:    64px;
+  --radius:   12px;
+  --ease:     cubic-bezier(.4,0,.2,1);
 }
 
-/* ══════════════════════════════════════════
-   RESET
-══════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:var(--nav)}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'DM Sans','Noto Sans Arabic',sans-serif;
-  overflow-x:hidden;line-height:1.65;
+/* ══════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans Arabic', 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
-body.ku,body.ar{font-family:'Noto Sans Arabic',sans-serif}
-img{display:block;max-width:100%}
-a{text-decoration:none;color:inherit}
-button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+body.en { font-family: 'DM Sans', 'Noto Sans Arabic', sans-serif; }
 
-/* Grain overlay */
-body::after{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-  mix-blend-mode:overlay;opacity:.4;
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
+
+/* Film-grain texture */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='.032'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay; opacity: .5;
 }
 
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg2)}
-::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    NAVBAR
-══════════════════════════════════════════ */
-#nav{
-  position:fixed;top:0;inset-inline-start:0;inset-inline-end:0;
-  z-index:900;height:var(--nav);
-  transition:background .35s,backdrop-filter .35s,border-color .35s;
-  border-bottom:1px solid transparent;
+══════════════════════════════════════════════════════ */
+#nav {
+  position: fixed;
+  top: 0; inset-inline-start: 0; inset-inline-end: 0;
+  z-index: 900;
+  height: var(--nav-h);
+  transition: background .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
 }
-#nav.scroll{
-  background:rgba(12,8,4,.92);
-  backdrop-filter:blur(22px);
-  border-bottom-color:var(--border);
-}
-.nav-in{
-  max-width:1200px;margin:0 auto;height:100%;
-  padding:0 24px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+#nav.scrolled {
+  background: rgba(8,5,2,.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
 }
 
-/* Text-based logo — no image */
-.nav-wordmark{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:1.45rem;font-weight:700;letter-spacing:3px;
-  color:var(--gold);line-height:1;
-  text-shadow:0 0 20px rgba(200,137,46,.45);
-  flex-shrink:0;
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  height: 100%; padding: 0 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
-.nav-wordmark em{color:var(--cream);font-style:normal}
 
-.nav-links{display:flex;list-style:none;gap:2px}
-.nav-links a{
-  padding:7px 14px;border-radius:8px;
-  font-size:.83rem;font-weight:500;color:var(--muted);
-  transition:color .25s,background .25s;
+/* Logo — image only in nav */
+.nav-logo-img {
+  height: 40px; width: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(196,134,42,.5));
+  transition: filter .3s;
+  flex-shrink: 0;
 }
-.nav-links a:hover{color:var(--gold2);background:rgba(200,137,46,.07)}
+.nav-logo-img:hover { filter: drop-shadow(0 0 20px rgba(196,134,42,.85)); }
 
-.nav-r{display:flex;align-items:center;gap:10px}
+.nav-links {
+  display: flex; list-style: none; gap: 2px;
+}
+.nav-links a {
+  padding: 7px 13px; border-radius: 8px;
+  font-size: .82rem; font-weight: 500; color: var(--muted);
+  transition: color .25s, background .25s;
+}
+.nav-links a:hover { color: var(--gold2); background: rgba(196,134,42,.07); }
 
-/* Language switcher */
-.langs{
-  display:flex;
-  border:1px solid var(--border);border-radius:8px;
-  overflow:hidden;background:rgba(255,255,255,.02);
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* Language pills */
+.lang-wrap {
+  display: flex;
+  border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; background: rgba(255,255,255,.02);
 }
-.lb{
-  padding:6px 11px;
-  font-size:.72rem;font-weight:700;letter-spacing:.04em;
-  color:var(--muted);transition:all .2s;
+.lp {
+  padding: 5px 11px;
+  font-size: .71rem; font-weight: 700; letter-spacing: .04em;
+  color: var(--muted); transition: all .2s; white-space: nowrap;
 }
-.lb.on{background:var(--gold);color:#0c0804}
-.lb:not(.on):hover{background:rgba(200,137,46,.1);color:var(--gold2)}
+.lp.on { background: var(--gold); color: var(--ink); }
+.lp:not(.on):hover { background: rgba(196,134,42,.1); color: var(--gold2); }
 
 /* Hamburger */
-.ham{
-  display:none;flex-direction:column;gap:5px;
-  padding:8px;border-radius:8px;
+.ham {
+  display: none; flex-direction: column; gap: 5px;
+  padding: 8px; border-radius: 8px;
 }
-.ham i{
-  display:block;width:20px;height:1.5px;
-  background:var(--gold2);border-radius:2px;
-  transition:all .3s;
+.ham i {
+  display: block; width: 20px; height: 1.5px;
+  background: var(--gold2); border-radius: 2px; transition: all .3s;
 }
-.ham.open i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.ham.open i:nth-child(2){opacity:0;transform:scaleX(0)}
-.ham.open i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.ham.open i:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.ham.open i:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.ham.open i:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* Mobile menu */
-.mob{
-  display:none;
-  position:fixed;top:var(--nav);inset-inline-start:0;inset-inline-end:0;
-  z-index:899;
-  background:rgba(12,8,4,.97);backdrop-filter:blur(28px);
-  border-bottom:1px solid var(--border);
-  flex-direction:column;padding:10px 18px 18px;gap:2px;
+/* Mobile drawer */
+.mob-nav {
+  display: none;
+  position: fixed; top: var(--nav-h); inset-inline-start: 0; inset-inline-end: 0;
+  z-index: 899;
+  background: rgba(8,5,2,.97); backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--border);
+  flex-direction: column; padding: 10px 18px 20px; gap: 2px;
 }
-.mob.open{display:flex}
-.mob a{
-  padding:12px 14px;border-radius:10px;
-  color:var(--muted);font-size:.95rem;font-weight:500;
-  transition:all .2s;
+.mob-nav.open { display: flex; }
+.mob-nav a {
+  padding: 13px 16px; border-radius: 10px;
+  color: var(--muted); font-size: .95rem; font-weight: 500;
+  transition: all .2s;
 }
-.mob a:hover{color:var(--gold2);background:rgba(200,137,46,.07)}
+.mob-nav a:hover { color: var(--gold2); background: rgba(196,134,42,.07); }
 
-/* ══════════════════════════════════════════
-   HERO — video background, NO logo image
-══════════════════════════════════════════ */
-#hero{
-  position:relative;
-  width:100%;
-  /* Full viewport height on desktop, shorter on mobile */
-  height:100svh;min-height:500px;
-  background:var(--bg2);overflow:hidden;
-}
-
-/* Video fills the frame, cropped properly */
-.hero-video{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;object-position:center 30%;
+/* ══════════════════════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════════════════════ */
+#hero {
+  position: relative;
+  width: 100%;
+  height: 100svh; min-height: 580px;
+  display: flex; align-items: flex-end; justify-content: center;
+  overflow: hidden;
+  background: var(--ink);
 }
 
-/* Layered vignette — heavier at bottom so nav text is readable */
-.hero-ov{
-  position:absolute;inset:0;pointer-events:none;
+/* ── Background images ──
+   Upload these files to your GitHub repo:
+   • hero-mobile-cstar.jpg   → 9:16 portrait, coffee mood, dark, no text
+   • hero-desktop-cstar.jpg  → 16:9 landscape, coffee mood, dark, no text
+   Until you upload them, the video fallback or hero.jpg is used.
+*/
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true');
+  background-size: cover;
+  background-position: center 30%;
+  transition: background-image .3s;
+}
+
+/* Mobile override — swap to portrait image */
+@media (max-width: 767px) {
+  .hero-bg {
+    /* Replace with hero-mobile-cstar.jpg once uploaded */
+    background-image: url('https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true');
+    background-position: center 20%;
+  }
+}
+/* Desktop — use landscape image */
+@media (min-width: 768px) {
+  .hero-bg {
+    /* Replace with hero-desktop-cstar.jpg once uploaded */
+    background-image: url('https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true');
+    background-position: center 35%;
+  }
+}
+
+/* Cinematic overlay — strong at top (nav area) and bottom (text area) */
+.hero-ov {
+  position: absolute; inset: 0; pointer-events: none;
   background:
-    linear-gradient(to bottom,
-      rgba(12,8,4,.55) 0%,
-      rgba(12,8,4,.0)  22%,
-      rgba(12,8,4,.0)  58%,
-      rgba(12,8,4,.75) 82%,
-      rgba(12,8,4,1)   100%
+    linear-gradient(
+      to bottom,
+      rgba(8,5,2,.68)  0%,
+      rgba(8,5,2,.10)  28%,
+      rgba(8,5,2,.05)  50%,
+      rgba(8,5,2,.40)  72%,
+      rgba(8,5,2,.90)  90%,
+      rgba(8,5,2,1.0) 100%
     );
 }
 
-/* Centered hero text — NO logo image here */
-.hero-body{
-  position:relative;z-index:2;
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;padding:24px 20px;
-  pointer-events:none;
+/* Hero content — pinned to bottom of section */
+.hero-content {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 640px;
+  padding: 0 24px 52px;
+  text-align: center;
 }
 
-.hero-kicker{
-  display:inline-block;
-  padding:5px 18px;
-  border:1px solid rgba(200,137,46,.5);
-  border-radius:50px;
-  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:20px;
-  animation:fadeUp .9s .3s var(--ease) both;
+/* Brand mark */
+.hero-brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.6rem, 14vw, 7.2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .08em;
+  line-height: 1;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 40px rgba(0,0,0,.8), 0 0 80px rgba(196,134,42,.18);
+  animation: heroTitle 1s .3s var(--ease) both;
 }
-.hero-title{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(3.8rem,12vw,8rem);
-  font-weight:700;letter-spacing:.1em;
-  color:#fff;line-height:1;
-  margin-bottom:16px;
-  animation:fadeUp .9s .45s var(--ease) both;
-  text-shadow:0 4px 40px rgba(0,0,0,.7);
-}
-.hero-title .star{color:var(--gold)}
-.hero-sub{
-  font-size:clamp(.9rem,2.2vw,1.1rem);
-  color:rgba(240,228,204,.75);
-  font-weight:300;max-width:420px;
-  margin-bottom:34px;
-  animation:fadeUp .9s .58s var(--ease) both;
-}
-.hero-ctas{
-  display:flex;flex-wrap:wrap;gap:11px;justify-content:center;
-  pointer-events:all;
-  animation:fadeUp .9s .7s var(--ease) both;
-}
-.btn-gold{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:12px 26px;
-  background:linear-gradient(135deg,var(--gold),#9a6018);
-  color:#0c0804;font-weight:700;font-size:.86rem;
-  border-radius:10px;
-  box-shadow:0 5px 22px rgba(200,137,46,.4);
-  transition:all .28s var(--ease);
-}
-.btn-gold:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(200,137,46,.55)}
-.btn-ghost{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:12px 26px;
-  border:1.5px solid rgba(200,137,46,.45);
-  color:var(--gold2);font-weight:600;font-size:.86rem;
-  border-radius:10px;backdrop-filter:blur(8px);
-  background:rgba(200,137,46,.05);
-  transition:all .28s var(--ease);
-}
-.btn-ghost:hover{background:rgba(200,137,46,.12);border-color:var(--gold);transform:translateY(-3px)}
+.hero-brand .star { color: var(--gold); }
 
-/* Scroll cue */
-.hero-scroll{
-  position:absolute;bottom:24px;left:50%;
-  transform:translateX(-50%);z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  pointer-events:none;
-  animation:scrollIn 1.6s 2s ease both;
-}
-.hero-scroll .finger{font-size:1.5rem;animation:bob 1.8s ease-in-out infinite}
-.hero-scroll .lbl{
-  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(200,137,46,.65);
+/* Tagline — short, elegant */
+.hero-tagline {
+  font-size: clamp(.88rem, 2.4vw, 1.05rem);
+  font-weight: 300;
+  color: rgba(240,228,204,.72);
+  letter-spacing: .04em;
+  margin-bottom: 28px;
+  animation: heroTitle 1s .5s var(--ease) both;
 }
 
-/* ══════════════════════════════════════════
-   SECTIONS
-══════════════════════════════════════════ */
-.sec{padding:88px 24px;position:relative;z-index:1}
-.sec-in{max-width:1200px;margin:0 auto}
-
-.sec-label{
-  display:inline-flex;align-items:center;gap:9px;
-  font-size:.68rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:10px;
-}
-.sec-label::before{
-  content:'';width:22px;height:2px;
-  background:var(--gold);border-radius:2px;display:block;
-}
-[dir="rtl"] .sec-label::before{order:1}
-
-h2.sec-title{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:clamp(2rem,4.5vw,3.4rem);
-  font-weight:700;color:var(--cream);
-  line-height:1.12;margin-bottom:12px;
-  letter-spacing:-.015em;
-}
-body.ar h2.sec-title,
-body.ku h2.sec-title{
-  font-family:'Noto Sans Arabic',sans-serif;
-  font-weight:800;font-size:clamp(1.7rem,3.5vw,2.6rem);
-  letter-spacing:0;
-}
-.divider{
-  width:40px;height:2px;
-  background:linear-gradient(90deg,var(--gold),transparent);
-  border-radius:3px;margin-bottom:36px;
-}
-[dir="rtl"] .divider{background:linear-gradient(270deg,var(--gold),transparent)}
-
-/* ══════════════════════════════════════════
-   ABOUT
-══════════════════════════════════════════ */
-#about{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.about-g{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:64px;align-items:center;
-}
-.about-txt p{color:var(--muted);line-height:1.9;margin-bottom:18px;font-size:.98rem}
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:10px;margin-top:32px;
-}
-.stat{
-  background:rgba(200,137,46,.05);
-  border:1px solid var(--border);border-radius:12px;
-  padding:18px 12px;text-align:center;
-  transition:all .3s var(--ease);
-}
-.stat:hover{
-  background:rgba(200,137,46,.1);
-  transform:translateY(-4px);
-  border-color:rgba(200,137,46,.3);
-}
-.stat-n{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2rem;font-weight:700;color:var(--gold);
-}
-.stat-l{font-size:.72rem;color:var(--muted);margin-top:4px;line-height:1.4}
-
-.about-img{
-  position:relative;border-radius:18px;overflow:hidden;
-  aspect-ratio:4/3;
-  box-shadow:var(--shadow);
-}
-.about-img img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform 1s var(--ease);
-}
-.about-img:hover img{transform:scale(1.05)}
-.about-img::after{
-  content:'';position:absolute;inset:0;
-  border:1.5px solid rgba(200,137,46,.18);
-  border-radius:18px;pointer-events:none;
-}
-.about-badge{
-  position:absolute;bottom:16px;inset-inline-end:16px;
-  background:rgba(12,8,4,.88);backdrop-filter:blur(16px);
-  border:1px solid var(--border);border-radius:11px;
-  padding:11px 14px;
-}
-.about-badge .stars{color:#f5c518;font-size:.82rem;letter-spacing:1px}
-.about-badge .score{font-size:.75rem;font-weight:700;color:var(--cream);margin-top:2px}
-
-/* ══════════════════════════════════════════
-   MENU
-══════════════════════════════════════════ */
-#menu{background:var(--bg)}
-
-.menu-head{text-align:center;margin-bottom:44px}
-.menu-head .divider{margin-inline:auto}
-
-/* Talabat banner */
-.tal-banner{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
-  background:linear-gradient(135deg,rgba(255,96,0,.07),rgba(200,137,46,.03));
-  border:1px solid rgba(255,96,0,.18);
-  border-radius:var(--r);padding:18px 22px;
-  margin-bottom:40px;
-}
-.tal-info{display:flex;align-items:center;gap:13px}
-.tal-ico{
-  width:42px;height:42px;flex-shrink:0;
-  border-radius:10px;background:rgba(255,96,0,.13);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;color:var(--tal);
-}
-.tal-t1{font-size:.95rem;font-weight:700;color:var(--cream)}
-.tal-t2{font-size:.77rem;color:var(--muted);margin-top:2px}
-.btn-tal{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:10px 20px;
-  background:linear-gradient(135deg,#ff6000,#cc3f00);
-  color:#fff;font-weight:700;font-size:.84rem;
-  border-radius:9px;
-  box-shadow:0 4px 18px rgba(255,96,0,.28);
-  transition:all .28s var(--ease);
-  flex-shrink:0;
-}
-.btn-tal:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(255,96,0,.45)}
-
-/* Category tabs */
-.tabs{
-  display:flex;flex-wrap:wrap;justify-content:center;
-  gap:7px;margin-bottom:38px;
-}
-.tab{
-  padding:7px 15px;border-radius:30px;
-  background:rgba(255,255,255,.025);
-  border:1px solid rgba(255,255,255,.06);
-  color:var(--muted);font-size:.79rem;font-weight:600;
-  transition:all .22s;white-space:nowrap;
-}
-.tab:hover{border-color:var(--gold);color:var(--gold2)}
-.tab.on{background:var(--gold);border-color:var(--gold);color:#0c0804}
-
-/* Grid */
-.mgrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+/* CTA buttons */
+.hero-btns {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  animation: heroTitle 1s .65s var(--ease) both;
 }
 
-/* Card */
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;
-  transition:transform .3s var(--ease),border-color .3s,box-shadow .3s;
-  cursor:pointer;
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 28px;
+  background: var(--gold);
+  color: var(--ink); font-weight: 700; font-size: .88rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 22px rgba(196,134,42,.4);
+  transition: all .28s var(--ease);
+  white-space: nowrap;
 }
-.card:hover{
-  transform:translateY(-7px);
-  border-color:rgba(200,137,46,.4);
-  box-shadow:0 20px 52px rgba(0,0,0,.5);
+.btn-primary:hover {
+  background: var(--gold2);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(196,134,42,.55);
 }
-.cimg{
-  position:relative;
-  aspect-ratio:4/3;overflow:hidden;
-  background:var(--card2);
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 26px;
+  border: 1.5px solid rgba(196,134,42,.5);
+  color: var(--gold2); font-weight: 600; font-size: .88rem;
+  border-radius: 50px;
+  background: rgba(196,134,42,.05);
+  backdrop-filter: blur(8px);
+  transition: all .28s var(--ease);
+  white-space: nowrap;
 }
-.cimg img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .7s var(--ease);
+.btn-outline:hover {
+  background: rgba(196,134,42,.12);
+  border-color: var(--gold);
+  transform: translateY(-3px);
 }
-.card:hover .cimg img{transform:scale(1.1)}
+
+/* Talabat orange button */
+.btn-tal {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff6200, #cc4400);
+  color: #fff; font-weight: 700; font-size: .86rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 18px rgba(255,98,0,.3);
+  transition: all .28s var(--ease);
+  white-space: nowrap;
+}
+.btn-tal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(255,98,0,.48);
+}
+
+/* ══════════════════════════════════════════════════════
+   THIN GOLD DIVIDER BAR
+══════════════════════════════════════════════════════ */
+.gold-bar {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .35;
+}
+[dir="rtl"] .gold-bar {
+  background: linear-gradient(270deg, transparent, var(--gold), transparent);
+}
+
+/* ══════════════════════════════════════════════════════
+   QUICK INFO STRIP (replaces stat blocks)
+══════════════════════════════════════════════════════ */
+.info-strip {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 22px;
+  position: relative; z-index: 1;
+}
+.info-strip-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: stretch;
+  overflow-x: auto; scrollbar-width: none;
+  gap: 0;
+}
+.info-strip-inner::-webkit-scrollbar { display: none; }
+
+.info-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 22px;
+  border-inline-end: 1px solid var(--border);
+  white-space: nowrap; flex-shrink: 0;
+}
+.info-item:last-child { border-inline-end: none; }
+.info-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+.info-lbl  { font-size: .68rem; color: var(--muted); display: block; letter-spacing: .05em; margin-bottom: 1px; }
+.info-val  { font-size: .86rem; font-weight: 600; color: var(--cream); }
+
+/* ══════════════════════════════════════════════════════
+   SECTIONS SHARED
+══════════════════════════════════════════════════════ */
+.sec { padding: 86px 22px; position: relative; z-index: 1; }
+.sec-inner { max-width: 1200px; margin: 0 auto; }
+
+.sec-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: .68rem; font-weight: 800; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px;
+}
+.sec-eyebrow::before {
+  content: ''; width: 20px; height: 1.5px;
+  background: var(--gold); border-radius: 2px; display: block;
+}
+[dir="rtl"] .sec-eyebrow::before { order: 1; }
+
+h2.sec-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 700; color: var(--cream); line-height: 1.15;
+  margin-bottom: 10px; letter-spacing: -.015em;
+}
+body.ku h2.sec-title,
+body.ar h2.sec-title {
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-weight: 700; font-size: clamp(1.7rem, 4vw, 2.6rem); letter-spacing: 0;
+}
+
+.sec-divider {
+  width: 36px; height: 1.5px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 32px;
+}
+[dir="rtl"] .sec-divider {
+  background: linear-gradient(270deg, var(--gold), transparent);
+}
+
+/* ══════════════════════════════════════════════════════
+   ABOUT SECTION
+══════════════════════════════════════════════════════ */
+#about {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+}
+
+/* Text side */
+.about-text p {
+  color: var(--text); line-height: 1.9; margin-bottom: 18px;
+  font-size: .97rem;
+}
+.about-text p.lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+  font-weight: 400; font-style: italic;
+  color: var(--cream); line-height: 1.55;
+}
+body.ku .about-text p.lead,
+body.ar .about-text p.lead {
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-style: normal; font-size: clamp(1.1rem, 2vw, 1.3rem);
+}
+
+.about-cta-row {
+  display: flex; gap: 11px; flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+/* Image side — uses about-section-cster.jpg */
+.about-img-wrap {
+  position: relative;
+  border-radius: 18px; overflow: hidden;
+  aspect-ratio: 4/3;
+  box-shadow: 0 30px 70px rgba(0,0,0,.6);
+}
+.about-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1s var(--ease);
+}
+.about-img-wrap:hover img { transform: scale(1.04); }
+.about-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  border: 1.5px solid rgba(196,134,42,.18);
+  border-radius: 18px; pointer-events: none;
+}
+
+/* Google badge */
+.g-badge {
+  position: absolute; bottom: 14px; inset-inline-end: 14px;
+  background: rgba(8,5,2,.88); backdrop-filter: blur(14px);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 14px;
+}
+.g-badge .stars { color: #f5c518; font-size: .8rem; letter-spacing: 1px; }
+.g-badge .score {
+  font-size: .73rem; font-weight: 700;
+  color: var(--cream); margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   MENU SECTION
+══════════════════════════════════════════════════════ */
+#menu { background: var(--bg); }
+
+.menu-header { text-align: center; margin-bottom: 44px; }
+.menu-header .sec-divider { margin-inline: auto; }
+
+/* Talabat delivery banner */
+.tal-strip {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+  background: linear-gradient(135deg, rgba(255,98,0,.07), rgba(196,134,42,.03));
+  border: 1px solid rgba(255,98,0,.18);
+  border-radius: var(--radius); padding: 17px 20px;
+  margin-bottom: 38px;
+}
+.tal-strip-info { display: flex; align-items: center; gap: 13px; }
+.tal-strip-ico {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(255,98,0,.12);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--tal); font-size: 1.1rem;
+}
+.tal-t1 { font-size: .92rem; font-weight: 700; color: var(--cream); }
+.tal-t2 { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+
+/* Filter tabs */
+.tabs-row {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 7px; margin-bottom: 38px;
+}
+.ftab {
+  padding: 7px 16px; border-radius: 30px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.06);
+  color: var(--muted); font-size: .79rem; font-weight: 600;
+  transition: all .22s; white-space: nowrap;
+}
+.ftab:hover { border-color: var(--gold); color: var(--gold2); }
+.ftab.on { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+/* Menu grid — 3 col desktop, 2 col mobile */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* Menu card */
+.mcard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: transform .32s var(--ease), border-color .32s, box-shadow .32s;
+  cursor: pointer;
+}
+.mcard:hover {
+  transform: translateY(-7px);
+  border-color: rgba(196,134,42,.4);
+  box-shadow: 0 22px 55px rgba(0,0,0,.52);
+}
+.mcard-img {
+  position: relative; aspect-ratio: 4/3; overflow: hidden;
+  background: var(--surface2);
+}
+.mcard-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .7s var(--ease);
+}
+.mcard:hover .mcard-img img { transform: scale(1.1); }
 
 /* Category chip */
-.chip{
-  position:absolute;top:9px;inset-inline-start:9px;
-  background:rgba(12,8,4,.8);backdrop-filter:blur(10px);
-  border:1px solid var(--border);
-  color:var(--gold2);font-size:.61rem;font-weight:700;
-  padding:3px 8px;border-radius:20px;letter-spacing:.04em;
+.mcard-chip {
+  position: absolute; top: 9px; inset-inline-start: 9px;
+  background: rgba(8,5,2,.8); backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  color: var(--gold2); font-size: .6rem; font-weight: 700;
+  padding: 3px 8px; border-radius: 20px; letter-spacing: .04em;
 }
 
 /* Zoom overlay */
-.zoom-lay{
-  position:absolute;inset:0;
-  background:rgba(12,8,4,.38);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .3s;
+.mcard-zoom {
+  position: absolute; inset: 0;
+  background: rgba(8,5,2,.38);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .3s;
 }
-.card:hover .zoom-lay{opacity:1}
-.zoom-btn{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(200,137,46,.88);color:#0c0804;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.88rem;
-  transform:scale(.6);transition:transform .3s;
+.mcard:hover .mcard-zoom { opacity: 1; }
+.zoom-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(196,134,42,.88); color: var(--ink);
+  display: flex; align-items: center; justify-content: center; font-size: .85rem;
+  transform: scale(.6); transition: transform .3s;
 }
-.card:hover .zoom-btn{transform:scale(1)}
+.mcard:hover .zoom-circle { transform: scale(1); }
 
 /* Card body */
-.cbody{padding:13px 14px 14px}
-.cname{
-  font-size:.9rem;font-weight:700;
-  color:var(--cream);margin-bottom:5px;line-height:1.3;
+.mcard-body { padding: 13px 14px 14px; }
+.mcard-name {
+  font-size: .88rem; font-weight: 700;
+  color: var(--cream); margin-bottom: 4px; line-height: 1.3;
 }
-.cdesc{
-  font-size:.74rem;color:var(--muted);line-height:1.6;
-  margin-bottom:11px;
-  display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
+.mcard-desc {
+  font-size: .72rem; color: var(--muted); line-height: 1.6;
+  margin-bottom: 11px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
 }
-.cfoot{
-  display:flex;align-items:center;
-  justify-content:space-between;gap:6px;
-  padding-top:10px;
-  border-top:1px solid rgba(255,255,255,.045);
+.mcard-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding-top: 9px; border-top: 1px solid rgba(255,255,255,.045);
 }
-.cprice{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;font-weight:700;color:var(--gold);
-  white-space:nowrap;
+.mcard-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--gold); white-space: nowrap;
 }
-.cprice sub{
-  font-size:.6rem;color:var(--muted);
-  font-weight:400;font-family:'DM Sans',sans-serif;
+.mcard-price sub {
+  font-size: .6rem; color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-weight: 400;
 }
-.order-btn{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 10px;
-  background:rgba(255,96,0,.09);
-  border:1px solid rgba(255,96,0,.24);
-  color:#ff9050;font-size:.68rem;font-weight:700;
-  border-radius:7px;transition:all .22s;white-space:nowrap;
+.mcard-order {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px;
+  background: rgba(255,98,0,.09); border: 1px solid rgba(255,98,0,.24);
+  color: #ff9058; font-size: .68rem; font-weight: 700;
+  border-radius: 7px; transition: all .22s; white-space: nowrap;
 }
-.order-btn:hover{background:rgba(255,96,0,.2);border-color:rgba(255,96,0,.5)}
+.mcard-order:hover { background: rgba(255,98,0,.2); border-color: rgba(255,98,0,.5); }
 
 /* See more block */
-.see-more{
-  text-align:center;margin-top:52px;
-  padding:42px 28px;
-  background:rgba(200,137,46,.03);
-  border:1px solid var(--border);border-radius:20px;
+.see-more-block {
+  text-align: center; margin-top: 52px;
+  padding: 40px 24px;
+  background: rgba(196,134,42,.03);
+  border: 1px solid var(--border); border-radius: 20px;
 }
-.see-more-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.65rem;font-weight:700;
-  color:var(--cream);margin-bottom:10px;
+.see-more-block h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 700; color: var(--cream); margin-bottom: 9px;
 }
-body.ar .see-more-title,
-body.ku .see-more-title{
-  font-family:'Noto Sans Arabic',sans-serif;font-size:1.35rem;
+body.ku .see-more-block h3,
+body.ar .see-more-block h3 {
+  font-family: 'Noto Sans Arabic', sans-serif; font-size: 1.3rem;
 }
-.see-more-txt{
-  color:var(--muted);font-size:.92rem;line-height:1.75;
-  max-width:520px;margin:0 auto 24px;
+.see-more-block p {
+  color: var(--muted); font-size: .9rem; line-height: 1.75;
+  max-width: 500px; margin: 0 auto 22px;
 }
-.see-more-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:11px}
+.see-more-btns {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 11px;
+}
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    LIGHTBOX
-══════════════════════════════════════════ */
-#lb{
-  display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,.88);backdrop-filter:blur(10px);
-  align-items:center;justify-content:center;
-  padding:16px;
+══════════════════════════════════════════════════════ */
+#lb {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.88); backdrop-filter: blur(12px);
+  align-items: center; justify-content: center; padding: 16px;
 }
-#lb.on{display:flex}
-.lb-box{
-  position:relative;
-  max-width:680px;width:100%;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;overflow:hidden;
-  animation:lbIn .3s var(--ease) both;
-  max-height:90svh;overflow-y:auto;
+#lb.on { display: flex; }
+.lb-box {
+  position: relative; max-width: 660px; width: 100%;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  animation: lbPop .3s var(--ease) both;
+  max-height: 90svh; overflow-y: auto;
 }
-.lb-img{aspect-ratio:16/10;background:var(--card2);overflow:hidden}
-.lb-img img{width:100%;height:100%;object-fit:cover}
-.lb-body{padding:22px 26px 26px}
-.lb-cat{
-  font-size:.65rem;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:7px;
+.lb-img { aspect-ratio: 16/10; background: var(--surface2); overflow: hidden; }
+.lb-img img { width: 100%; height: 100%; object-fit: cover; }
+.lb-body { padding: 22px 24px 26px; }
+.lb-cat {
+  font-size: .64rem; font-weight: 800; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 7px;
 }
-.lb-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.75rem;font-weight:700;color:var(--cream);
-  margin-bottom:9px;line-height:1.2;
+.lb-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--cream);
+  margin-bottom: 8px; line-height: 1.2;
 }
-body.ar .lb-name,
-body.ku .lb-name{font-family:'Noto Sans Arabic',sans-serif;font-size:1.3rem}
-.lb-desc{color:var(--muted);line-height:1.8;margin-bottom:18px;font-size:.88rem}
-.lb-bot{
-  display:flex;align-items:center;
-  justify-content:space-between;gap:12px;flex-wrap:wrap;
+body.ku .lb-name, body.ar .lb-name {
+  font-family: 'Noto Sans Arabic', sans-serif; font-size: 1.3rem;
 }
-.lb-price{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.75rem;font-weight:700;color:var(--gold);
+.lb-desc { color: var(--muted); line-height: 1.8; margin-bottom: 18px; font-size: .87rem; }
+.lb-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
 }
-.lb-close{
-  position:absolute;top:12px;inset-inline-end:12px;
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.1);
-  color:var(--cream);font-size:.9rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .22s;z-index:2;
+.lb-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--gold);
 }
-.lb-close:hover{background:rgba(200,137,46,.85);color:#0c0804;border-color:transparent}
+.lb-close {
+  position: absolute; top: 12px; inset-inline-end: 12px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(0,0,0,.7); border: 1px solid rgba(255,255,255,.1);
+  color: var(--cream); font-size: .9rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .22s; z-index: 2;
+}
+.lb-close:hover { background: var(--gold); color: var(--ink); border-color: transparent; }
 
-/* ══════════════════════════════════════════
-   CONTACT
-══════════════════════════════════════════ */
-#contact{background:var(--bg2);border-top:1px solid var(--border)}
-.ct-g{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:56px;align-items:start;
+/* ══════════════════════════════════════════════════════
+   CONTACT SECTION
+══════════════════════════════════════════════════════ */
+#contact {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
 }
-.ct-cards{display:flex;flex-direction:column;gap:10px}
-.ct-card{
-  display:flex;align-items:center;gap:14px;
-  background:rgba(255,255,255,.02);
-  border:1px solid var(--border);border-radius:13px;
-  padding:15px 18px;transition:all .25s;
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: start;
 }
-a.ct-card:hover{
-  border-color:rgba(200,137,46,.38);
-  background:rgba(200,137,46,.04);
+.contact-cards { display: flex; flex-direction: column; gap: 10px; }
+.contact-card {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,.02); border: 1px solid var(--border);
+  border-radius: 13px; padding: 15px 18px; transition: all .25s;
 }
-.ct-ico{
-  width:44px;height:44px;border-radius:10px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
+a.contact-card:hover {
+  border-color: rgba(196,134,42,.38);
+  background: rgba(196,134,42,.04);
 }
-.ico-wa{background:rgba(37,211,102,.1);color:#25d366}
-.ico-ig{background:rgba(193,53,132,.1);color:#e1306c}
-.ico-map{background:rgba(200,137,46,.1);color:var(--gold)}
-.ct-lbl{font-size:.68rem;color:var(--muted);margin-bottom:2px}
-.ct-val{font-size:.9rem;font-weight:600;color:var(--cream)}
+.cc-ico {
+  width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.ico-wa  { background: rgba(37,211,102,.1); color: var(--green); }
+.ico-ig  { background: rgba(193,53,132,.1); color: #e1306c; }
+.ico-map { background: rgba(196,134,42,.1); color: var(--gold); }
+.cc-lbl  { font-size: .67rem; color: var(--muted); margin-bottom: 2px; }
+.cc-val  { font-size: .9rem; font-weight: 600; color: var(--cream); }
 
-/* Google Maps embed */
-.map-wrap{
-  border-radius:16px;overflow:hidden;
-  border:1px solid var(--border);
-  box-shadow:var(--shadow);height:300px;
+/* Map embed */
+.map-wrap {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0,0,0,.45); height: 300px;
 }
-.map-wrap iframe{width:100%;height:100%;border:none;display:block}
+.map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    FOOTER
-══════════════════════════════════════════ */
-footer{
-  background:rgba(6,4,2,.98);
-  border-top:1px solid var(--border);
-  padding:44px 24px 36px;
-  text-align:center;
-  position:relative;z-index:1;
+══════════════════════════════════════════════════════ */
+footer {
+  background: rgba(5,3,2,.98);
+  border-top: 1px solid var(--border);
+  padding: 44px 22px 36px; text-align: center;
+  position: relative; z-index: 1;
 }
-.ft-wordmark{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.1rem;font-weight:700;
-  letter-spacing:4px;color:var(--gold);
-  margin-bottom:18px;
-  display:inline-block;
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--gold); letter-spacing: 4px;
+  margin-bottom: 18px; display: inline-block;
 }
-.ft-wordmark em{color:var(--cream);font-style:normal}
-.ft-soc{display:flex;justify-content:center;gap:10px;margin-bottom:22px}
-.sc{
-  width:40px;height:40px;border-radius:9px;
-  background:rgba(255,255,255,.03);
-  border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--muted);font-size:1rem;transition:all .22s;
+.footer-logo em { color: var(--cream); font-style: normal; }
+.footer-social { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+.social-btn {
+  width: 40px; height: 40px; border-radius: 9px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: .98rem; transition: all .22s;
 }
-.sc:hover{
-  background:rgba(200,137,46,.1);
-  border-color:var(--gold);color:var(--gold2);
-  transform:translateY(-3px);
+.social-btn:hover {
+  background: rgba(196,134,42,.1); border-color: var(--gold);
+  color: var(--gold2); transform: translateY(-3px);
 }
-.ft-copy{font-size:.73rem;color:var(--muted)}
+.footer-copy { font-size: .72rem; color: var(--muted); }
 
-/* ══════════════════════════════════════════
-   FLOATING WHATSAPP
-══════════════════════════════════════════ */
-#floatWa{
-  position:fixed;bottom:22px;inset-inline-end:22px;z-index:800;
-  width:54px;height:54px;border-radius:50%;
-  background:linear-gradient(135deg,#25d366,#128c7e);
-  box-shadow:0 4px 18px rgba(37,211,102,.4);
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:1.45rem;
-  animation:waPop .6s 1.2s var(--ease) both,
-             waPulse 2.8s 2.2s ease infinite;
-  transition:transform .22s;
+/* ══════════════════════════════════════════════════════
+   FLOATING WHATSAPP BUTTON
+══════════════════════════════════════════════════════ */
+#float-wa {
+  position: fixed; bottom: 22px; inset-inline-end: 22px; z-index: 800;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  box-shadow: 0 4px 20px rgba(37,211,102,.42);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 1.45rem;
+  animation: waPop .6s 1.4s var(--ease) both, waPulse 3s 2.2s ease infinite;
+  transition: transform .22s;
 }
-#floatWa:hover{transform:scale(1.12)}
+#float-wa:hover { transform: scale(1.12); }
 
-/* ══════════════════════════════════════════
-   REVEAL (fade-in on scroll)
-══════════════════════════════════════════ */
-.fi{
-  opacity:0;transform:translateY(22px);
-  transition:opacity .6s var(--ease),transform .6s var(--ease);
+/* ══════════════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .65s var(--ease), transform .65s var(--ease);
 }
-.fi.d1{transition-delay:.1s}
-.fi.d2{transition-delay:.18s}
-.fi.d3{transition-delay:.26s}
-.fi.vis{opacity:1;transform:none}
+.reveal.r1 { transition-delay: .08s; }
+.reveal.r2 { transition-delay: .16s; }
+.reveal.r3 { transition-delay: .24s; }
+.reveal.visible { opacity: 1; transform: none; }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    ANIMATIONS
-══════════════════════════════════════════ */
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:none}
+══════════════════════════════════════════════════════ */
+@keyframes heroTitle {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
 }
-@keyframes bob{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(9px)}
+@keyframes lbPop {
+  from { opacity: 0; transform: scale(.88) translateY(20px); }
+  to   { opacity: 1; transform: none; }
 }
-@keyframes scrollIn{
-  from{opacity:0;transform:translateX(-50%) translateY(12px)}
-  to{opacity:.9;transform:translateX(-50%) translateY(0)}
+@keyframes waPop {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
 }
-@keyframes waPop{
-  from{opacity:0;transform:scale(0)}
-  to{opacity:1;transform:scale(1)}
+@keyframes waPulse {
+  0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,.42); }
+  50%     { box-shadow: 0 4px 26px rgba(37,211,102,.65), 0 0 0 9px rgba(37,211,102,.06); }
 }
-@keyframes waPulse{
-  0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.4)}
-  50%{box-shadow:0 4px 26px rgba(37,211,102,.65),0 0 0 8px rgba(37,211,102,.07)}
-}
-@keyframes lbIn{
-  from{opacity:0;transform:scale(.88) translateY(22px)}
-  to{opacity:1;transform:none}
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:none}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    RESPONSIVE
-══════════════════════════════════════════ */
-@media(max-width:900px){
-  .nav-links{display:none}
-  .ham{display:flex}
-  .about-g{grid-template-columns:1fr;gap:40px}
-  .about-img{order:-1}
-  .mgrid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .ct-g{grid-template-columns:1fr;gap:36px}
+══════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .ham { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-img-wrap { order: -1; }
+  .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 13px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 36px; }
 }
-@media(max-width:500px){
-  .sec{padding:64px 14px}
-  .hero-title{font-size:3.4rem}
-  .mgrid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .cbody{padding:10px 11px}
-  .cname{font-size:.84rem}
-  .cdesc{font-size:.71rem}
-  .cfoot{flex-direction:column;align-items:flex-start;gap:6px}
-  .tabs{gap:5px}.tab{padding:6px 11px;font-size:.76rem}
-  .tal-banner{flex-direction:column;align-items:flex-start}
-  .see-more{padding:30px 18px}
-  .see-more-btns{flex-direction:column;align-items:center}
-  .lb-body{padding:16px 18px}
-  .lb-name{font-size:1.2rem}
-  .about-g{gap:32px}
-  .stats{grid-template-columns:repeat(3,1fr)}
+
+@media (max-width: 540px) {
+  :root { --nav-h: 58px; }
+  .sec { padding: 64px 16px; }
+  #hero { min-height: 520px; }
+  .hero-content { padding: 0 18px 44px; }
+  .hero-brand { font-size: 3.2rem; letter-spacing: .06em; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .btn-primary,
+  .btn-outline,
+  .btn-tal { width: 100%; justify-content: center; max-width: 280px; }
+  .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 9px; }
+  .mcard-body { padding: 10px 11px; }
+  .mcard-name { font-size: .83rem; }
+  .mcard-desc { font-size: .7rem; }
+  .mcard-foot { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .tabs-row { gap: 5px; }
+  .ftab { padding: 6px 11px; font-size: .75rem; }
+  .tal-strip { flex-direction: column; align-items: flex-start; }
+  .see-more-btns { flex-direction: column; align-items: center; }
+  .info-strip-inner { justify-content: flex-start; }
+  .about-cta-row { flex-direction: column; }
+  .about-cta-row a { text-align: center; justify-content: center; }
 }
 </style>
 </head>
 <body class="ku" dir="rtl">
 
-<!-- Floating WhatsApp -->
-<a id="floatWa" href="https://wa.me/9647507851599" target="_blank" aria-label="WhatsApp">
+<!-- ══ FLOATING WHATSAPP ══ -->
+<a id="float-wa" href="https://wa.me/9647507851599" target="_blank" aria-label="WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- ══════════ LIGHTBOX ══════════ -->
+<!-- ══ LIGHTBOX ══ -->
 <div id="lb" onclick="lbBg(event)">
   <div class="lb-box">
     <button class="lb-close" onclick="lbClose()"><i class="fas fa-times"></i></button>
     <div class="lb-img"><img id="lbImg" src="" alt=""></div>
     <div class="lb-body">
-      <div class="lb-cat" id="lbCat"></div>
+      <div class="lb-cat"  id="lbCat"></div>
       <div class="lb-name" id="lbName"></div>
       <div class="lb-desc" id="lbDesc"></div>
-      <div class="lb-bot">
+      <div class="lb-bottom">
         <div class="lb-price" id="lbPrice"></div>
-        <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe" target="_blank" class="btn-tal">
-          <i class="fas fa-motorcycle"></i>
-          <span id="lbTalBtn"></span>
-        </a>
+        <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe"
+           target="_blank" class="btn-tal" id="lbOrderBtn"></a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ NAVBAR ══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <div class="nav-in">
-    <!-- Text wordmark only — no logo image in nav -->
-    <div class="nav-wordmark">C<em>★</em>STAR</div>
+  <div class="nav-inner">
+    <a href="#">
+      <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/logo.png?raw=true"
+           alt="C-Star Coffee" class="nav-logo-img"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <!-- Text fallback if logo.png fails to load -->
+      <span style="display:none;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold);letter-spacing:3px;">C<em style="color:var(--cream);font-style:normal">★</em>STAR</span>
+    </a>
 
     <ul class="nav-links">
       <li><a href="#about"   class="t" data-k="nAbout"></a></li>
@@ -762,11 +863,11 @@ footer{
       <li><a href="#contact" class="t" data-k="nContact"></a></li>
     </ul>
 
-    <div class="nav-r">
-      <div class="langs">
-        <button class="lb on" data-l="ku" onclick="setLang('ku')">کوردی</button>
-        <button class="lb"    data-l="ar" onclick="setLang('ar')">عربي</button>
-        <button class="lb"    data-l="en" onclick="setLang('en')">EN</button>
+    <div class="nav-right">
+      <div class="lang-wrap">
+        <button class="lp on" data-l="ku" onclick="setLang('ku')">کوردی</button>
+        <button class="lp"    data-l="ar" onclick="setLang('ar')">عربي</button>
+        <button class="lp"    data-l="en" onclick="setLang('en')">EN</button>
       </div>
       <button class="ham" id="ham" onclick="mobToggle()">
         <i></i><i></i><i></i>
@@ -775,74 +876,113 @@ footer{
   </div>
 </nav>
 
-<!-- Mobile nav -->
-<div class="mob" id="mob">
+<!-- Mobile nav drawer -->
+<div class="mob-nav" id="mobNav">
   <a href="#about"   onclick="mobToggle()" class="t" data-k="nAbout"></a>
   <a href="#menu"    onclick="mobToggle()" class="t" data-k="nMenu"></a>
   <a href="#contact" onclick="mobToggle()" class="t" data-k="nContact"></a>
 </div>
 
-<!-- ══════════ HERO ══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     HERO
+     ─ Background images to upload to GitHub:
+       • hero-mobile-cstar.jpg  (9:16, phone portrait)
+       • hero-desktop-cstar.jpg (16:9, widescreen)
+     ─ Until uploaded, hero.jpg is used as fallback
+══════════════════════════════════════════════════════ -->
 <section id="hero">
-  <!-- Background video — no logo overlaid on top -->
-  <video class="hero-video" id="heroVid"
-    autoplay muted loop playsinline preload="auto">
-    <source src="https://titsumnyciasohgfjixf.supabase.co/storage/v1/object/public/video/coffee-hero.mp4" type="video/mp4">
-  </video>
-
-  <!-- Fallback: if video fails, hero.jpg shows as background via JS -->
+  <div class="hero-bg" id="heroBg"></div>
   <div class="hero-ov"></div>
 
-  <!-- Hero text — clean, centered, no image -->
-  <div class="hero-body">
-    <div class="hero-kicker">HAWLERI NWE · ERBIL · KURDISTAN</div>
-    <h1 class="hero-title">C<span class="star">★</span>STAR</h1>
-    <p class="hero-sub t" data-k="heroSub"></p>
-    <div class="hero-ctas">
-      <a href="#menu"    class="btn-gold t" data-k="ctaMenu"></a>
-      <a href="#contact" class="btn-ghost t" data-k="ctaContact"></a>
+  <div class="hero-content">
+    <!-- Brand name only — no location, no emoji, no subtitle clutter -->
+    <h1 class="hero-brand">C<span class="star">★</span>STAR</h1>
+    <p class="hero-tagline t" data-k="heroTagline"></p>
+    <div class="hero-btns">
+      <a href="#menu"    class="btn-primary t" data-k="heroCta1"></a>
+      <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe"
+         target="_blank" class="btn-tal">
+        <i class="fas fa-motorcycle"></i>
+        <span class="t" data-k="heroCta2"></span>
+      </a>
     </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="finger">👇</div>
-    <div class="lbl t" data-k="scrollTxt"></div>
   </div>
 </section>
 
-<!-- ══════════ ABOUT ══════════ -->
+<!-- ══ GOLD BAR ══ -->
+<div class="gold-bar"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     QUICK INFO STRIP
+══════════════════════════════════════════════════════ -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-item">
+      <i class="fas fa-star info-icon"></i>
+      <div>
+        <span class="info-lbl t" data-k="ibRating"></span>
+        <span class="info-val">5.0 ★★★★★</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <i class="fas fa-mug-hot info-icon"></i>
+      <div>
+        <span class="info-lbl t" data-k="ibDrinks"></span>
+        <span class="info-val t" data-k="ibDrinksV"></span>
+      </div>
+    </div>
+    <div class="info-item">
+      <i class="fas fa-motorcycle info-icon"></i>
+      <div>
+        <span class="info-lbl t" data-k="ibDelivery"></span>
+        <span class="info-val">Talabat ✓</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <i class="fas fa-map-marker-alt info-icon"></i>
+      <div>
+        <span class="info-lbl t" data-k="ibLocation"></span>
+        <span class="info-val t" data-k="ibLocationV"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ABOUT
+     ─ Uses about-section-cster.jpg (already in your repo)
+══════════════════════════════════════════════════════ -->
 <section id="about" class="sec">
-  <div class="sec-in">
-    <div class="about-g">
+  <div class="sec-inner">
+    <div class="about-grid">
 
-      <div class="fi">
-        <div class="sec-label t" data-k="aLabel"></div>
+      <!-- Text -->
+      <div class="reveal">
+        <div class="sec-eyebrow t" data-k="aEye"></div>
         <h2 class="sec-title">C-Star Coffee</h2>
-        <div class="divider"></div>
-        <p class="t" data-k="aP1"></p>
-        <p class="t" data-k="aP2"></p>
-        <div class="stats">
-          <div class="stat fi d1">
-            <div class="stat-n">5.0</div>
-            <div class="stat-l">★★★★★</div>
-          </div>
-          <div class="stat fi d2">
-            <div class="stat-n">16+</div>
-            <div class="stat-l t" data-k="sItems"></div>
-          </div>
-          <div class="stat fi d3">
-            <div class="stat-n">100%</div>
-            <div class="stat-l t" data-k="sFresh"></div>
-          </div>
+        <div class="sec-divider"></div>
+        <p class="lead t" data-k="aLead" style="font-family:inherit"></p>
+        <p class="t" data-k="aBody"></p>
+        <div class="about-cta-row">
+          <a href="#menu" class="btn-primary t" data-k="aCtaMenu"></a>
+          <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe"
+             target="_blank" class="btn-tal">
+            <i class="fas fa-motorcycle"></i>
+            <span class="t" data-k="aCtaTal"></span>
+          </a>
         </div>
       </div>
 
-      <div class="about-img fi d1">
-        <img src="https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true"
-             alt="C-Star Coffee" loading="lazy">
-        <div class="about-badge">
+      <!-- Image: about-section-cster.jpg -->
+      <div class="about-img-wrap reveal r1">
+        <img
+          src="https://github.com/hama-tech2/cstar-coffee/blob/main/about-section-cster.jpg?raw=true"
+          alt="C-Star Coffee atmosphere"
+          loading="lazy"
+          onerror="this.src='https://github.com/hama-tech2/cstar-coffee/blob/main/hero.jpg?raw=true'">
+        <div class="g-badge">
           <div class="stars">★★★★★</div>
-          <div class="score">5.0 / 5 Google</div>
+          <div class="score">Google 5.0 / 5</div>
         </div>
       </div>
 
@@ -850,20 +990,22 @@ footer{
   </div>
 </section>
 
-<!-- ══════════ MENU ══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     MENU
+══════════════════════════════════════════════════════ -->
 <section id="menu" class="sec">
-  <div class="sec-in">
+  <div class="sec-inner">
 
-    <div class="menu-head fi">
-      <div class="sec-label t" data-k="mLabel"></div>
+    <div class="menu-header reveal">
+      <div class="sec-eyebrow t" data-k="mEye"></div>
       <h2 class="sec-title t" data-k="mTitle"></h2>
-      <div class="divider"></div>
+      <div class="sec-divider"></div>
     </div>
 
-    <!-- Talabat delivery banner -->
-    <div class="tal-banner fi">
-      <div class="tal-info">
-        <div class="tal-ico"><i class="fas fa-motorcycle"></i></div>
+    <!-- Talabat strip -->
+    <div class="tal-strip reveal">
+      <div class="tal-strip-info">
+        <div class="tal-strip-ico"><i class="fas fa-motorcycle"></i></div>
         <div>
           <div class="tal-t1 t" data-k="talT1"></div>
           <div class="tal-t2 t" data-k="talT2"></div>
@@ -876,32 +1018,32 @@ footer{
       </a>
     </div>
 
-    <!-- Category filter tabs -->
-    <div class="tabs fi" id="tabs">
-      <button class="tab on" data-c="all"  onclick="filter('all')"><span class="t" data-k="cAll"></span></button>
-      <button class="tab"    data-c="hot"  onclick="filter('hot')"><span class="t" data-k="cHot"></span></button>
-      <button class="tab"    data-c="cold" onclick="filter('cold')"><span class="t" data-k="cCold"></span></button>
-      <button class="tab"    data-c="smo"  onclick="filter('smo')"><span class="t" data-k="cSmo"></span></button>
-      <button class="tab"    data-c="tea"  onclick="filter('tea')"><span class="t" data-k="cTea"></span></button>
-      <button class="tab"    data-c="jus"  onclick="filter('jus')"><span class="t" data-k="cJus"></span></button>
-      <button class="tab"    data-c="milk" onclick="filter('milk')"><span class="t" data-k="cMilk"></span></button>
-      <button class="tab"    data-c="moj"  onclick="filter('moj')"><span class="t" data-k="cMoj"></span></button>
-      <button class="tab"    data-c="cake" onclick="filter('cake')"><span class="t" data-k="cCake"></span></button>
+    <!-- Filter tabs -->
+    <div class="tabs-row reveal" id="tabsRow">
+      <button class="ftab on" data-c="all"  onclick="filter('all')"><span class="t" data-k="cAll"></span></button>
+      <button class="ftab"    data-c="hot"  onclick="filter('hot')"><span class="t" data-k="cHot"></span></button>
+      <button class="ftab"    data-c="cold" onclick="filter('cold')"><span class="t" data-k="cCold"></span></button>
+      <button class="ftab"    data-c="smo"  onclick="filter('smo')"><span class="t" data-k="cSmo"></span></button>
+      <button class="ftab"    data-c="tea"  onclick="filter('tea')"><span class="t" data-k="cTea"></span></button>
+      <button class="ftab"    data-c="jus"  onclick="filter('jus')"><span class="t" data-k="cJus"></span></button>
+      <button class="ftab"    data-c="milk" onclick="filter('milk')"><span class="t" data-k="cMilk"></span></button>
+      <button class="ftab"    data-c="moj"  onclick="filter('moj')"><span class="t" data-k="cMoj"></span></button>
+      <button class="ftab"    data-c="cake" onclick="filter('cake')"><span class="t" data-k="cCake"></span></button>
     </div>
 
-    <div class="mgrid" id="mgrid"></div>
+    <div class="menu-grid" id="menuGrid"></div>
 
-    <!-- See more / Talabat CTA -->
-    <div class="see-more fi">
-      <div class="see-more-title t" data-k="seeTitle"></div>
-      <p class="see-more-txt t" data-k="seeTxt"></p>
+    <!-- See more -->
+    <div class="see-more-block reveal">
+      <h3 class="t" data-k="seeTitle"></h3>
+      <p  class="t" data-k="seeTxt"></p>
       <div class="see-more-btns">
         <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe"
-           target="_blank" class="btn-tal" style="padding:13px 28px;font-size:.9rem">
+           target="_blank" class="btn-tal" style="padding:13px 28px">
           <i class="fas fa-motorcycle"></i>
           <span class="t" data-k="seeBtn1"></span>
         </a>
-        <a href="https://wa.me/9647507851599" target="_blank" class="btn-ghost">
+        <a href="https://wa.me/9647507851599" target="_blank" class="btn-outline">
           <i class="fab fa-whatsapp"></i>
           <span class="t" data-k="seeBtn2"></span>
         </a>
@@ -911,47 +1053,49 @@ footer{
   </div>
 </section>
 
-<!-- ══════════ CONTACT ══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════════════ -->
 <section id="contact" class="sec">
-  <div class="sec-in">
-    <div class="ct-g">
+  <div class="sec-inner">
+    <div class="contact-grid">
 
-      <div class="fi">
-        <div class="sec-label t" data-k="ctLabel"></div>
+      <div class="reveal">
+        <div class="sec-eyebrow t" data-k="ctEye"></div>
         <h2 class="sec-title t" data-k="ctTitle"></h2>
-        <div class="divider"></div>
-        <div class="ct-cards">
-          <a href="https://wa.me/9647507851599" target="_blank" class="ct-card">
-            <div class="ct-ico ico-wa"><i class="fab fa-whatsapp"></i></div>
+        <div class="sec-divider"></div>
+        <div class="contact-cards">
+          <a href="https://wa.me/9647507851599" target="_blank" class="contact-card">
+            <div class="cc-ico ico-wa"><i class="fab fa-whatsapp"></i></div>
             <div>
-              <div class="ct-lbl t" data-k="ctWa"></div>
-              <div class="ct-val">+964 750 785 1599</div>
+              <div class="cc-lbl t" data-k="ctWa"></div>
+              <div class="cc-val">+964 750 785 1599</div>
             </div>
           </a>
-          <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="ct-card">
-            <div class="ct-ico ico-ig"><i class="fab fa-instagram"></i></div>
+          <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="contact-card">
+            <div class="cc-ico ico-ig"><i class="fab fa-instagram"></i></div>
             <div>
-              <div class="ct-lbl">Instagram</div>
-              <div class="ct-val">@cstar.coffee</div>
+              <div class="cc-lbl">Instagram</div>
+              <div class="cc-val">@cstar.coffee</div>
             </div>
           </a>
-          <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="ct-card">
-            <div class="ct-ico ico-map"><i class="fas fa-map-marker-alt"></i></div>
+          <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="contact-card">
+            <div class="cc-ico ico-map"><i class="fas fa-map-marker-alt"></i></div>
             <div>
-              <div class="ct-lbl t" data-k="ctLoc"></div>
-              <div class="ct-val t" data-k="ctLocV"></div>
+              <div class="cc-lbl t" data-k="ctLoc"></div>
+              <div class="cc-val t" data-k="ctLocV"></div>
             </div>
           </a>
         </div>
       </div>
 
-      <div class="fi d1">
+      <div class="reveal r1">
         <div class="map-wrap">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3262!2d44.0085!3d36.1834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007243a2f6af5eb%3A0x2d8e29aef0dc3b3a!2sC%20Star%20Coffee!5e0!3m2!1sen!2siq!4v1699000000000"
             allowfullscreen loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="C-Star Coffee location">
+            title="C-Star Coffee">
           </iframe>
         </div>
       </div>
@@ -960,159 +1104,206 @@ footer{
   </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!-- ══ FOOTER ══ -->
 <footer>
-  <div class="ft-wordmark">C<em>★</em>STAR</div>
-  <div class="ft-soc">
-    <a href="https://wa.me/9647507851599" target="_blank" class="sc"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="sc"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe" target="_blank" class="sc"><i class="fas fa-motorcycle"></i></a>
-    <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="sc"><i class="fas fa-map-marker-alt"></i></a>
+  <div class="footer-logo">C<em>★</em>STAR</div>
+  <div class="footer-social">
+    <a href="https://wa.me/9647507851599" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/cstar.coffee?igsh=NDdld2x3MHp4c2Qy" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe" target="_blank" class="social-btn"><i class="fas fa-motorcycle"></i></a>
+    <a href="https://maps.app.goo.gl/HgURNoyLQ3F3yvZLA" target="_blank" class="social-btn"><i class="fas fa-map-marker-alt"></i></a>
   </div>
-  <p class="ft-copy t" data-k="ftCopy"></p>
+  <p class="footer-copy t" data-k="ftCopy"></p>
 </footer>
 
-<!-- ══════════ SCRIPT ══════════ -->
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
 <script>
-const BASE = 'https://github.com/hama-tech2/cstar-coffee/blob/main/';
-const TAL  = 'https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe';
+/* ─── CONSTANTS ─── */
+const REPO = 'https://github.com/hama-tech2/cstar-coffee/blob/main/';
+const RAW  = '?raw=true';
+const TALABAT = 'https://www.talabat.com/ar/iraq/restaurant/796523/c-star-coffee-hawlere-nwe';
+const WA_NUM  = '9647507851599';
+
+/* ─────────────────────────────────────────────────────
+   IMAGE FILENAMES
+   Upload these to GitHub repo:
+   • hero-mobile-cstar.jpg   → 9:16 portrait
+   • hero-desktop-cstar.jpg  → 16:9 landscape
+   Until uploaded, hero.jpg is used.
+───────────────────────────────────────────────────── */
+const HERO_MOBILE  = 'hero-mobile-cstar.jpg';
+const HERO_DESKTOP = 'hero-desktop-cstar.jpg';
+const HERO_FALLBACK = 'hero.jpg';
+
+/* Set hero background based on screen size */
+function setHeroBg() {
+  const bg = document.getElementById('heroBg');
+  const isMobile = window.innerWidth < 768;
+  const file = isMobile ? HERO_MOBILE : HERO_DESKTOP;
+  const url  = REPO + file + RAW;
+
+  // Test if image exists, fall back to hero.jpg
+  const test = new Image();
+  test.onload  = () => bg.style.backgroundImage = `url('${url}')`;
+  test.onerror = () => bg.style.backgroundImage = `url('${REPO}${HERO_FALLBACK}${RAW}')`;
+  test.src = url;
+}
+setHeroBg();
+window.addEventListener('resize', setHeroBg, { passive: true });
 
 /* ─── TRANSLATIONS ─── */
 const T = {
-  ku:{
-    nAbout:'دەربارەی ئێمە', nMenu:'مینیو', nContact:'پەیوەندی',
-    heroSub:'باشترین ئەزموونی قاوە لە هەولێر',
-    ctaMenu:'مینیو ببینە', ctaContact:'پەیوەندیمان پێوە بکە',
-    scrollTxt:'خوارەوە',
-    aLabel:'دەربارەی ئێمە',
-    aP1:'C-Star Coffee شوێنێکی تایبەتە کە ئەزموونی قاوەی جیهانی لەگەڵ باشترین خواردنەوەی تازە دابین دەکات. لە هەولێری نوێی کوردستان بنیاتمان نراوە.',
-    aP2:'هەموو جامێک بە دەستی پیشەکارەکانمان دروستدەکرێت بە بەکارهێنانی کەرەستەی باش — کوالیتی لە هەر رەشاندنێکدا دەبینیت.',
-    sItems:'جۆری خواردنەوە', sFresh:'تازە و سروشتی',
-    mLabel:'مینیوی ئێمە', mTitle:'ئەمڕۆ چی دەتەوێت؟',
-    talT1:'داواکاری لە تالابات بکە', talT2:'خواردنەوەی دڵخوازت لە C-Star Coffee', talBtn:'مینیو لە تالابات ببینە',
-    cAll:'هەمووی', cHot:'☕ گەرم', cCold:'🧊 سارد', cSmo:'🥤 سمووتی',
-    cTea:'🍵 چای سارد', cJus:'🍊 ئاوی تازە', cMilk:'🥛 میلکشێک', cMoj:'🍃 مۆجیتۆ', cCake:'🍰 دەسەری',
-    orderBtn:'داواکاری لە تالابات',
-    seeTitle:'هەمووی ببینە لە تالابات',
-    seeTxt:'ئەمە بەشێکی بچووکی مینیوی ئێمەیە. بۆ بینینی هەموو خواردنەوە و خواردنەکان، سەردانی پەیجی تالابات بکە.',
-    seeBtn1:'هەموو مینیو لە تالابات ببینە', seeBtn2:'واتساپ',
-    ctLabel:'پەیوەندی', ctTitle:'شوێنمان بزانە',
-    ctWa:'واتساپ و تەلەفۆن', ctLoc:'شوێن', ctLocV:'هەولێری نوێ، هەولێر، کوردستان',
-    ftCopy:'© 2025 C-Star Coffee — هەموو مافەکان پارێزراون',
-    cats:{hot:'گەرم',cold:'سارد',smo:'سمووتی',tea:'چای سارد',jus:'ئاوی تازە',milk:'میلکشێک',moj:'مۆجیتۆ',cake:'دەسەری'}
+  ku: {
+    nAbout: 'دەربارەی ئێمە', nMenu: 'مینیو', nContact: 'پەیوەندی',
+    heroTagline: 'قاوەی پرێمیەم — گەرمی ئەزموون',
+    heroCta1: 'مینیو ببینە', heroCta2: 'داواکاری لە تالابات',
+    ibRating: 'هەڵسەنگاندن', ibDrinks: 'خواردنەوەکان',
+    ibDrinksV: '٥٢+ جۆر', ibDelivery: 'گەیاندن',
+    ibLocation: 'شوێن', ibLocationV: 'هەولێری نوێ، هەولێر',
+    aEye: 'دەربارەی ئێمە',
+    aLead: 'C★STAR Coffee — ئەزموونی قاوەی پرێمیەم.',
+    aBody: 'هەموو جامێک بە دەستی پیشەکارەکانمان لەگەڵ باشترین کەرەستەی تازە دروستدەکرێت — کوالیتی لە هەر رەشاندنێکدا.',
+    aCtaMenu: 'مینیو ببینە', aCtaTal: 'تالابات',
+    mEye: 'مینیوی ئێمە', mTitle: 'ئەمڕۆ چی دەتەوێت؟',
+    talT1: 'داواکاری لە تالابات بکە',
+    talT2: 'خواردنەوەی دڵخوازت لە C★STAR Coffee گەیاندنی هەیە',
+    talBtn: 'مینیو لە تالابات ببینە',
+    cAll: 'هەمووی', cHot: '☕ گەرم', cCold: '🧊 سارد', cSmo: '🥤 سمووتی',
+    cTea: '🍵 چای سارد', cJus: '🍊 ئاوی تازە', cMilk: '🥛 میلکشێک',
+    cMoj: '🍃 مۆجیتۆ', cCake: '🍰 دەسەری',
+    orderBtn: 'داواکاری',
+    seeTitle: 'هەموو مینیو لە تالابات ببینە',
+    seeTxt: 'ئەمە بەشێکی بچووکی مینیوی ئێمەیە. ٥٢+ خواردنەوە و خواردن لە تالابات بەردەستن.',
+    seeBtn1: 'مینیوی تەواو لە تالابات', seeBtn2: 'واتساپ',
+    ctEye: 'پەیوەندی', ctTitle: 'شوێنمان بزانە',
+    ctWa: 'واتساپ و تەلەفۆن', ctLoc: 'شوێن', ctLocV: 'هەولێری نوێ، هەولێر، کوردستان',
+    ftCopy: '© 2025 C★STAR Coffee — هەموو مافەکان پارێزراون',
+    cats: { hot:'گەرم', cold:'سارد', smo:'سمووتی', tea:'چای سارد', jus:'ئاوی تازە', milk:'میلکشێک', moj:'مۆجیتۆ', cake:'دەسەری' }
   },
-  ar:{
-    nAbout:'عن المقهى', nMenu:'القائمة', nContact:'تواصل',
-    heroSub:'أجود تجربة قهوة في أربيل',
-    ctaMenu:'عرض القائمة', ctaContact:'تواصل معنا',
-    scrollTxt:'للأسفل',
-    aLabel:'عن المقهى',
-    aP1:'C-Star Coffee وجهة لمحبّي القهوة الاستثنائية والمشروبات الطازجة في أربيل الجديدة، إقليم كردستان العراق.',
-    aP2:'يُعدّ كل مشروب بعناية من قبل متخصصينا باستخدام أجود المكوّنات الطازجة لضمان أعلى مستويات الجودة.',
-    sItems:'تشكيلة المشروبات', sFresh:'طازج وطبيعي',
-    mLabel:'قائمتنا', mTitle:'بماذا تتفضل اليوم؟',
-    talT1:'اطلب عبر تطبيق طلبات', talT2:'استمتع بمشروبك المفضل موصلاً إليك', talBtn:'عرض القائمة على طلبات',
-    cAll:'الكل', cHot:'☕ ساخنة', cCold:'🧊 باردة', cSmo:'🥤 سموذي',
-    cTea:'🍵 شاي مثلج', cJus:'🍊 عصائر', cMilk:'🥛 ميلك شيك', cMoj:'🍃 موهيتو', cCake:'🍰 حلويات',
-    orderBtn:'اطلب عبر طلبات',
-    seeTitle:'اكتشف القائمة كاملةً على طلبات',
-    seeTxt:'هذا جزء فقط من قائمتنا. تفضّل بزيارة طلبات لرؤية جميع الأصناف والطلب مباشرة.',
-    seeBtn1:'عرض القائمة الكاملة', seeBtn2:'واتساب',
-    ctLabel:'تواصل معنا', ctTitle:'أين نجدنا؟',
-    ctWa:'واتساب وهاتف', ctLoc:'الموقع', ctLocV:'هولير الجديدة، أربيل، كردستان',
-    ftCopy:'© 2025 C-Star Coffee — جميع الحقوق محفوظة',
-    cats:{hot:'ساخنة',cold:'باردة',smo:'سموذي',tea:'شاي مثلج',jus:'عصائر',milk:'ميلك شيك',moj:'موهيتو',cake:'حلويات'}
+  ar: {
+    nAbout: 'عن المقهى', nMenu: 'القائمة', nContact: 'تواصل',
+    heroTagline: 'قهوة فاخرة — لحظات دافئة',
+    heroCta1: 'عرض القائمة', heroCta2: 'اطلب عبر طلبات',
+    ibRating: 'التقييم', ibDrinks: 'المشروبات',
+    ibDrinksV: '+٥٢ صنف', ibDelivery: 'التوصيل',
+    ibLocation: 'الموقع', ibLocationV: 'هولير الجديدة، أربيل',
+    aEye: 'عن المقهى',
+    aLead: 'C★STAR Coffee — تجربة قهوة فاخرة.',
+    aBody: 'يُعدّ كل مشروب بعناية من قبل متخصصينا باستخدام أجود المكوّنات الطازجة — جودة في كل رشفة.',
+    aCtaMenu: 'عرض القائمة', aCtaTal: 'طلبات',
+    mEye: 'قائمتنا', mTitle: 'بماذا تتفضل اليوم؟',
+    talT1: 'اطلب عبر تطبيق طلبات',
+    talT2: 'استمتع بمشروبك المفضل من C★STAR Coffee موصلاً إليك',
+    talBtn: 'عرض القائمة على طلبات',
+    cAll: 'الكل', cHot: '☕ ساخنة', cCold: '🧊 باردة', cSmo: '🥤 سموذي',
+    cTea: '🍵 شاي مثلج', cJus: '🍊 عصائر', cMilk: '🥛 ميلك شيك',
+    cMoj: '🍃 موهيتو', cCake: '🍰 حلويات',
+    orderBtn: 'اطلب',
+    seeTitle: 'اكتشف القائمة كاملةً على طلبات',
+    seeTxt: 'هذا جزء فقط من قائمتنا. أكثر من ٥٢ صنفاً متوفر على طلبات.',
+    seeBtn1: 'القائمة الكاملة', seeBtn2: 'واتساب',
+    ctEye: 'تواصل معنا', ctTitle: 'أين نجدنا؟',
+    ctWa: 'واتساب وهاتف', ctLoc: 'الموقع', ctLocV: 'هولير الجديدة، أربيل، كردستان',
+    ftCopy: '© 2025 C★STAR Coffee — جميع الحقوق محفوظة',
+    cats: { hot:'ساخنة', cold:'باردة', smo:'سموذي', tea:'شاي مثلج', jus:'عصائر', milk:'ميلك شيك', moj:'موهيتو', cake:'حلويات' }
   },
-  en:{
-    nAbout:'About', nMenu:'Menu', nContact:'Contact',
-    heroSub:"Erbil's Finest Coffee Experience",
-    ctaMenu:'Explore Menu', ctaContact:'Find Us',
-    scrollTxt:'Scroll',
-    aLabel:'About Us',
-    aP1:"C-Star Coffee is Erbil's destination for exceptional coffee and freshly crafted drinks, founded in Hawleri Nwe, Kurdistan Region of Iraq.",
-    aP2:'Every cup is carefully prepared by our expert baristas using the finest fresh ingredients — quality and flavour in every sip.',
-    sItems:'Drink Varieties', sFresh:'Fresh & Natural',
-    mLabel:'Our Menu', mTitle:"What'll It Be Today?",
-    talT1:'Order via Talabat', talT2:'Get your favourite C-Star Coffee delivered', talBtn:'View on Talabat',
-    cAll:'All', cHot:'☕ Hot', cCold:'🧊 Cold', cSmo:'🥤 Smoothies',
-    cTea:'🍵 Iced Tea', cJus:'🍊 Juices', cMilk:'🥛 Milkshakes', cMoj:'🍃 Mojito', cCake:'🍰 Desserts',
-    orderBtn:'Order on Talabat',
-    seeTitle:'View Full Menu on Talabat',
-    seeTxt:'This is just a selection. Visit our Talabat page to see all 52+ items and order directly.',
-    seeBtn1:'Full Menu on Talabat', seeBtn2:'WhatsApp Us',
-    ctLabel:'Get In Touch', ctTitle:'Find Us',
-    ctWa:'WhatsApp & Phone', ctLoc:'Location', ctLocV:'Hawleri Nwe, Erbil, Kurdistan Region',
-    ftCopy:'© 2025 C-Star Coffee — All Rights Reserved',
-    cats:{hot:'Hot',cold:'Cold',smo:'Smoothie',tea:'Iced Tea',jus:'Juice',milk:'Milkshake',moj:'Mojito',cake:'Dessert'}
+  en: {
+    nAbout: 'About', nMenu: 'Menu', nContact: 'Contact',
+    heroTagline: 'Premium Coffee. Warm Moments.',
+    heroCta1: 'Explore Menu', heroCta2: 'Order on Talabat',
+    ibRating: 'Rating', ibDrinks: 'Menu Items',
+    ibDrinksV: '52+ Drinks', ibDelivery: 'Delivery',
+    ibLocation: 'Location', ibLocationV: "Hawleri Nwe, Erbil",
+    aEye: 'About Us',
+    aLead: 'C★STAR Coffee — a premium coffee experience.',
+    aBody: 'Every cup is crafted by our expert baristas using the finest fresh ingredients — quality and flavour in every sip.',
+    aCtaMenu: 'View Menu', aCtaTal: 'Talabat',
+    mEye: 'Our Menu', mTitle: "What'll It Be Today?",
+    talT1: 'Order via Talabat',
+    talT2: 'Get your C★STAR Coffee delivered to your door',
+    talBtn: 'View on Talabat',
+    cAll: 'All', cHot: '☕ Hot', cCold: '🧊 Cold', cSmo: '🥤 Smoothies',
+    cTea: '🍵 Iced Tea', cJus: '🍊 Juices', cMilk: '🥛 Milkshakes',
+    cMoj: '🍃 Mojito', cCake: '🍰 Desserts',
+    orderBtn: 'Order',
+    seeTitle: 'Full Menu on Talabat',
+    seeTxt: 'This is just a selection. Over 52 items available on our Talabat page.',
+    seeBtn1: 'Full Menu on Talabat', seeBtn2: 'WhatsApp',
+    ctEye: 'Get In Touch', ctTitle: 'Find Us',
+    ctWa: 'WhatsApp & Phone', ctLoc: 'Location', ctLocV: 'Hawleri Nwe, Erbil, Kurdistan',
+    ftCopy: '© 2025 C★STAR Coffee — All Rights Reserved',
+    cats: { hot:'Hot', cold:'Cold', smo:'Smoothie', tea:'Iced Tea', jus:'Juice', milk:'Milkshake', moj:'Mojito', cake:'Dessert' }
   }
 };
 
-/* ─── MENU ITEMS ─── */
-const items = [
-  {c:'hot', img:'mocha.jpg',
-   n:{ku:'موچا',ar:'موكا',en:'Mocha'},
-   d:{ku:'ئێسپرێسۆ، پوودەری کاکاۆ، شیر و قایمەی خراپکراو',ar:'إسبريسو، مسحوق الكاكاو، حليب وكريمة مخفوقة',en:'Espresso, cocoa powder, milk and whipped cream'},
-   p:'5,000'},
-  {c:'hot', img:'latte.jpg',
-   n:{ku:'لاتێ',ar:'لاتيه',en:'Latte'},
-   d:{ku:'ئێسپرێسۆ، شیری گەرمکراو و شەکر',ar:'إسبريسو، حليب مبخر وسكر',en:'Espresso, steamed milk and sugar'},
-   p:'4,500'},
-  {c:'cold', img:'matcha-Latte.jpg',
-   n:{ku:'ماچا لاتێ',ar:'ماتشا لاتيه',en:'Matcha Latte'},
-   d:{ku:'چای سەوزی ژاپۆنی، شیری گوێزی هیندستان و بەفر',ar:'شاي أخضر ياباني، حليب جوز الهند وثلج',en:'Japanese green tea, coconut milk and ice'},
-   p:'5,000'},
-  {c:'cold', img:'icemocha.jpg',
-   n:{ku:'ئایس موچا',ar:'موكا بارد',en:'Iced Mocha'},
-   d:{ku:'ئێسپرێسۆ، کاکاۆ، شیر، بەفر و قایمە',ar:'إسبريسو، كاكاو، حليب، ثلج وكريمة',en:'Espresso, cocoa powder, milk, ice and whipped cream'},
-   p:'5,000'},
-  {c:'smo', img:'berrymix.jpg',
-   n:{ku:'بێری تێکەڵ',ar:'سموذي التوت',en:'Berry Mix Smoothie'},
-   d:{ku:'بلاکبێری، بلووبێری و توێ فرەنگی لەگەڵ بەفر',ar:'مزيج التوت الأسود والأزرق والفراولة',en:'Blackberries, blueberries and strawberries blend'},
-   p:'5,000'},
-  {c:'smo', img:'mango.jpg',
-   n:{ku:'سمووتی مانگۆ',ar:'سموذي المانجو',en:'Mango Smoothie'},
-   d:{ku:'مانگۆ، ئاو، بەفر و شیرینکەرەکان',ar:'مانجو، ماء، ثلج ومحليات',en:'Mango, water, ice and sweeteners'},
-   p:'5,000'},
-  {c:'tea', img:'Iced-tea-with-lemon.jpg',
-   n:{ku:'چای سارد بە لیمۆ',ar:'شاي مثلج بالليمون',en:'Lemon Iced Tea'},
-   d:{ku:'چای سارد شیرینکراو بە تامی لیمۆ',ar:'شاي مثلج محلى بنكهة الليمون',en:'Sweetened iced tea with lemon flavor'},
-   p:'5,000'},
-  {c:'tea', img:'Iced-tea-with-lemon.jpg',
-   n:{ku:'چای سارد بە خۆخ',ar:'شاي مثلج بالخوخ',en:'Peach Iced Tea'},
-   d:{ku:'چای سارد شیرینکراو بە تامی خۆخ',ar:'شاي مثلج محلى بنكهة الخوخ',en:'Sweetened peach-flavored iced tea'},
-   p:'5,000'},
-  {c:'jus', img:'Mango-juice.jpg',
-   n:{ku:'ئاوی مانگۆ',ar:'عصير المانجو',en:'Mango Juice'},
-   d:{ku:'مانگۆی تازە، ئاو و شیرینکەرەکان',ar:'مانجو، ماء ومحليات',en:'Mango, water and sweeteners'},
-   p:'5,000'},
-  {c:'jus', img:'strawberry-juice.jpg',
-   n:{ku:'ئاوی توێ فرەنگی',ar:'عصير الفراولة',en:'Strawberry Juice'},
-   d:{ku:'توێ فرەنگی تازە، ئاو و شیرینکەرەکان',ar:'فراولة طازجة، ماء ومحليات',en:'Fresh strawberries, water and sweeteners'},
-   p:'5,000'},
-  {c:'milk', img:'strawberry-juice.jpg',
-   n:{ku:'میلکشێکی توێ فرەنگی',ar:'ميلك شيك الفراولة',en:'Strawberry Milkshake'},
-   d:{ku:'توێ فرەنگی، دۆنگەی توێ فرەنگی و شیر لەگەڵ قایمە',ar:'فراولة، آيس كريم فراولة، حليب مع كريمة',en:'Strawberries, ice cream, milk and cream'},
-   p:'6,000'},
-  {c:'milk', img:'Nutella.jpg',
-   n:{ku:'میلکشێکی نوتێلا',ar:'ميلك شيك نوتيلا',en:'Nutella Milkshake'},
-   d:{ku:'نوتێلا، دۆنگەی نوتێلا و شیر لەگەڵ قایمە',ar:'نوتيلا، آيس كريم نوتيلا، حليب مع كريمة',en:'Nutella, Nutella ice cream and milk with cream'},
-   p:'6,000'},
-  {c:'moj', img:'classic.jpg',
-   n:{ku:'کلاسیک مۆجیتۆ',ar:'موهيتو كلاسيك',en:'Classic Mojito'},
-   d:{ku:'شەربەتی لیمۆ، گەڵای نەعناع، لیمۆ، بەفر و ٧UP',ar:'شراب الليمون، نعناع، شرائح ليمون، ثلج و7UP',en:'Lemon syrup, mint leaves, lemon slices, ice and 7UP'},
-   p:'5,000'},
-  {c:'moj', img:'Mojito-mixed-berries.jpg',
-   n:{ku:'مۆجیتۆ بێری تێکەڵ',ar:'موهيتو التوت المشكل',en:'Mixed Berry Mojito'},
-   d:{ku:'شەربەتی بێری تێکەڵ، نەعناع، لیمۆ، بەفر و ٧UP',ar:'شراب التوت، نعناع، ليمون، ثلج و7UP',en:'Mixed berry syrup, mint, lemon slices, ice and 7UP'},
-   p:'5,000'},
-  {c:'cake', img:'Carrot-cake.jpg',
-   n:{ku:'کێکی گەزەر',ar:'كيك الجزر',en:'Carrot Cake'},
-   d:{ku:'گەزەری ریشکراو، دارچین و گوێزی ئینگلیزی',ar:'جزر مبشور، قرفة وجوز مخبوز مع خليط الكيك',en:'Grated carrots, cinnamon and walnuts with cake mix'},
-   p:'5,000'},
-  {c:'cake', img:'pancakes.jpg',
-   n:{ku:'پانکێک',ar:'بان كيك',en:'Pancakes'},
-   d:{ku:'پانکێکی نەرم و خوێند لەگەڵ شەربەت',ar:'بان كيك طري يقدم مع شيرة',en:'Fluffy pancakes served with syrup'},
-   p:'4,000'}
+/* ─── MENU DATA ─── */
+const ITEMS = [
+  { c:'hot',  img:'mocha.jpg',
+    n:{ ku:'موچا', ar:'موكا', en:'Mocha' },
+    d:{ ku:'ئێسپرێسۆ، پوودەری کاکاۆ، شیر و قایمەی خراپکراو', ar:'إسبريسو، مسحوق كاكاو، حليب وكريمة مخفوقة', en:'Espresso, cocoa powder, milk and whipped cream' },
+    p:'5,000' },
+  { c:'hot',  img:'latte.jpg',
+    n:{ ku:'لاتێ', ar:'لاتيه', en:'Latte' },
+    d:{ ku:'ئێسپرێسۆ، شیری گەرمکراو و شەکر', ar:'إسبريسو، حليب مبخر وسكر', en:'Espresso, steamed milk and sugar' },
+    p:'4,500' },
+  { c:'cold', img:'matcha-Latte.jpg',
+    n:{ ku:'ماچا لاتێ', ar:'ماتشا لاتيه', en:'Matcha Latte' },
+    d:{ ku:'چای سەوزی ژاپۆنی، شیری گوێزی هیندستان و بەفر', ar:'شاي أخضر ياباني، حليب جوز الهند وثلج', en:'Japanese green tea, coconut milk and ice' },
+    p:'5,000' },
+  { c:'cold', img:'icemocha.jpg',
+    n:{ ku:'ئایس موچا', ar:'موكا بارد', en:'Iced Mocha' },
+    d:{ ku:'ئێسپرێسۆ، کاکاۆ، شیر، بەفر و قایمە', ar:'إسبريسو، كاكاو، حليب، ثلج وكريمة', en:'Espresso, cocoa powder, milk, ice and whipped cream' },
+    p:'5,000' },
+  { c:'smo',  img:'berrymix.jpg',
+    n:{ ku:'بێری تێکەڵ', ar:'سموذي التوت', en:'Berry Mix Smoothie' },
+    d:{ ku:'بلاکبێری، بلووبێری و توێ فرەنگی', ar:'مزيج التوت الأسود والأزرق والفراولة', en:'Blackberries, blueberries and strawberries blend' },
+    p:'5,000' },
+  { c:'smo',  img:'mango.jpg',
+    n:{ ku:'سمووتی مانگۆ', ar:'سموذي المانجو', en:'Mango Smoothie' },
+    d:{ ku:'مانگۆ، ئاو، بەفر و شیرینکەرەکان', ar:'مانجو، ماء، ثلج ومحليات', en:'Mango, water, ice and sweeteners' },
+    p:'5,000' },
+  { c:'tea',  img:'Iced-tea-with-lemon.jpg',
+    n:{ ku:'چای سارد بە لیمۆ', ar:'شاي مثلج بالليمون', en:'Lemon Iced Tea' },
+    d:{ ku:'چای سارد شیرینکراو بە تامی لیمۆ', ar:'شاي مثلج محلى بنكهة الليمون', en:'Sweetened iced tea with lemon flavor' },
+    p:'5,000' },
+  { c:'tea',  img:'Iced-tea-with-lemon.jpg',
+    n:{ ku:'چای سارد بە خۆخ', ar:'شاي مثلج بالخوخ', en:'Peach Iced Tea' },
+    d:{ ku:'چای سارد شیرینکراو بە تامی خۆخ', ar:'شاي مثلج بنكهة الخوخ', en:'Sweetened peach-flavored iced tea' },
+    p:'5,000' },
+  { c:'jus',  img:'Mango-juice.jpg',
+    n:{ ku:'ئاوی مانگۆ', ar:'عصير المانجو', en:'Mango Juice' },
+    d:{ ku:'مانگۆی تازە، ئاو و شیرینکەرەکان', ar:'مانجو، ماء ومحليات', en:'Mango, water and sweeteners' },
+    p:'5,000' },
+  { c:'jus',  img:'strawberry-juice.jpg',
+    n:{ ku:'ئاوی توێ فرەنگی', ar:'عصير الفراولة', en:'Strawberry Juice' },
+    d:{ ku:'توێ فرەنگی تازە، ئاو و شیرینکەرەکان', ar:'فراولة طازجة، ماء ومحليات', en:'Fresh strawberries, water and sweeteners' },
+    p:'5,000' },
+  { c:'milk', img:'strawberry-juice.jpg',
+    n:{ ku:'میلکشێکی توێ فرەنگی', ar:'ميلك شيك فراولة', en:'Strawberry Milkshake' },
+    d:{ ku:'توێ فرەنگی، دۆنگەی توێ فرەنگی و شیر لەگەڵ قایمە', ar:'فراولة، آيس كريم فراولة، حليب مع كريمة', en:'Strawberries, ice cream, milk and cream' },
+    p:'6,000' },
+  { c:'milk', img:'Nutella.jpg',
+    n:{ ku:'میلکشێکی نوتێلا', ar:'ميلك شيك نوتيلا', en:'Nutella Milkshake' },
+    d:{ ku:'نوتێلا، دۆنگەی نوتێلا و شیر لەگەڵ قایمە', ar:'نوتيلا، آيس كريم نوتيلا، حليب مع كريمة', en:'Nutella, Nutella ice cream and milk with cream' },
+    p:'6,000' },
+  { c:'moj',  img:'classic.jpg',
+    n:{ ku:'کلاسیک مۆجیتۆ', ar:'موهيتو كلاسيك', en:'Classic Mojito' },
+    d:{ ku:'شەربەتی لیمۆ، گەڵای نەعناع، لیمۆ، بەفر و ٧UP', ar:'شراب الليمون، نعناع، شرائح ليمون، ثلج و7UP', en:'Lemon syrup, mint leaves, lemon slices, ice and 7UP' },
+    p:'5,000' },
+  { c:'moj',  img:'Mojito-mixed-berries.jpg',
+    n:{ ku:'مۆجیتۆ بێری تێکەڵ', ar:'موهيتو التوت المشكل', en:'Mixed Berry Mojito' },
+    d:{ ku:'شەربەتی بێری تێکەڵ، نەعناع، لیمۆ، بەفر و ٧UP', ar:'شراب التوت، نعناع، ليمون، ثلج و7UP', en:'Mixed berry syrup, mint, lemon slices, ice and 7UP' },
+    p:'5,000' },
+  { c:'cake', img:'Carrot-cake.jpg',
+    n:{ ku:'کێکی گەزەر', ar:'كيك الجزر', en:'Carrot Cake' },
+    d:{ ku:'گەزەری ریشکراو، دارچین و گوێزی ئینگلیزی', ar:'جزر مبشور، قرفة وجوز مخبوز مع خليط الكيك', en:'Grated carrots, cinnamon and walnuts with cake mix' },
+    p:'5,000' },
+  { c:'cake', img:'pancakes.jpg',
+    n:{ ku:'پانکێک', ar:'بان كيك', en:'Pancakes' },
+    d:{ ku:'پانکێکی نەرم و خوێند لەگەڵ شەربەت', ar:'بان كيك طري يقدم مع شيرة', en:'Fluffy pancakes served with syrup' },
+    p:'4,000' }
 ];
 
 /* ─── STATE ─── */
@@ -1124,39 +1315,36 @@ function setLang(l) {
   document.body.className = l;
   document.body.dir = l === 'en' ? 'ltr' : 'rtl';
   document.documentElement.lang = l === 'ku' ? 'ckb' : l;
-
+  document.querySelectorAll('.lp[data-l]').forEach(b => b.classList.toggle('on', b.dataset.l === l));
   document.querySelectorAll('.t[data-k]').forEach(el => {
     const v = T[l][el.dataset.k];
     if (v != null) el.textContent = v;
   });
-  document.querySelectorAll('.lb[data-l]').forEach(b =>
-    b.classList.toggle('on', b.dataset.l === l)
-  );
-  renderGrid(cat);
+  renderMenu(cat);
 }
 
-/* ─── renderGrid ─── */
-function renderGrid(c) {
-  const g = document.getElementById('mgrid');
-  const list = c === 'all' ? items : items.filter(i => i.c === c);
-  g.innerHTML = list.map((it, i) => {
-    const dl  = (i * 0.045).toFixed(2);
-    const cn  = T[lang].cats[it.c] || it.c;
-    const idx = items.indexOf(it);
+/* ─── renderMenu ─── */
+function renderMenu(c) {
+  const grid = document.getElementById('menuGrid');
+  const list = c === 'all' ? ITEMS : ITEMS.filter(i => i.c === c);
+  grid.innerHTML = list.map((it, idx) => {
+    const delay = (idx * .045).toFixed(2);
+    const catLabel = T[lang].cats[it.c] || it.c;
+    const realIdx  = ITEMS.indexOf(it);
     return `
-<div class="card" style="animation:cardIn .4s ${dl}s ease both" onclick="lbOpen(${idx})">
-  <div class="cimg">
-    <img src="${BASE}${it.img}?raw=true" alt="${it.n[lang]}" loading="lazy"
-         onerror="this.src='${BASE}hero.jpg?raw=true'">
-    <div class="chip">${cn}</div>
-    <div class="zoom-lay"><div class="zoom-btn"><i class="fas fa-expand-alt"></i></div></div>
+<div class="mcard" style="animation:cardIn .4s ${delay}s ease both" onclick="lbOpen(${realIdx})">
+  <div class="mcard-img">
+    <img src="${REPO}${it.img}${RAW}" alt="${it.n[lang]}" loading="lazy"
+         onerror="this.src='${REPO}hero.jpg${RAW}'">
+    <div class="mcard-chip">${catLabel}</div>
+    <div class="mcard-zoom"><div class="zoom-circle"><i class="fas fa-expand-alt"></i></div></div>
   </div>
-  <div class="cbody">
-    <div class="cname">${it.n[lang]}</div>
-    <div class="cdesc">${it.d[lang]}</div>
-    <div class="cfoot">
-      <div class="cprice">${it.p} <sub>IQD</sub></div>
-      <a href="${TAL}" target="_blank" class="order-btn" onclick="event.stopPropagation()">
+  <div class="mcard-body">
+    <div class="mcard-name">${it.n[lang]}</div>
+    <div class="mcard-desc">${it.d[lang]}</div>
+    <div class="mcard-foot">
+      <div class="mcard-price">${it.p} <sub>IQD</sub></div>
+      <a href="${TALABAT}" target="_blank" class="mcard-order" onclick="event.stopPropagation()">
         <i class="fas fa-motorcycle"></i>${T[lang].orderBtn}
       </a>
     </div>
@@ -1168,27 +1356,26 @@ function renderGrid(c) {
 /* ─── filter ─── */
 function filter(c) {
   cat = c;
-  document.querySelectorAll('.tab').forEach(b =>
-    b.classList.toggle('on', b.dataset.c === c)
-  );
-  const g = document.getElementById('mgrid');
+  document.querySelectorAll('.ftab').forEach(b => b.classList.toggle('on', b.dataset.c === c));
+  const g = document.getElementById('menuGrid');
   g.style.cssText = 'opacity:0;transform:translateY(10px)';
   setTimeout(() => {
-    renderGrid(c);
+    renderMenu(c);
     g.style.cssText = 'opacity:1;transform:none;transition:opacity .2s,transform .2s';
-  }, 180);
+  }, 160);
 }
 
-/* ─── lightbox ─── */
+/* ─── Lightbox ─── */
 function lbOpen(idx) {
-  const it = items[idx];
-  document.getElementById('lbImg').src   = BASE + it.img + '?raw=true';
-  document.getElementById('lbImg').alt   = it.n[lang];
+  const it = ITEMS[idx];
+  document.getElementById('lbImg').src  = REPO + it.img + RAW;
+  document.getElementById('lbImg').alt  = it.n[lang];
   document.getElementById('lbCat').textContent   = T[lang].cats[it.c] || it.c;
   document.getElementById('lbName').textContent  = it.n[lang];
   document.getElementById('lbDesc').textContent  = it.d[lang];
   document.getElementById('lbPrice').textContent = it.p + ' IQD';
-  document.getElementById('lbTalBtn').textContent = T[lang].orderBtn;
+  document.getElementById('lbOrderBtn').innerHTML =
+    `<i class="fas fa-motorcycle"></i> ${T[lang].orderBtn}`;
   document.getElementById('lb').classList.add('on');
   document.body.style.overflow = 'hidden';
 }
@@ -1201,33 +1388,26 @@ function lbBg(e) {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
 
-/* ─── mobile nav ─── */
+/* ─── Mobile nav ─── */
 function mobToggle() {
-  document.getElementById('mob').classList.toggle('open');
+  document.getElementById('mobNav').classList.toggle('open');
   document.getElementById('ham').classList.toggle('open');
 }
 
-/* ─── navbar scroll effect ─── */
+/* ─── Navbar scroll effect ─── */
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scroll', scrollY > 30);
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 30);
 }, { passive: true });
 
-/* ─── video fallback ─── */
-const vid = document.getElementById('heroVid');
-if (vid) {
-  vid.addEventListener('error', () => {
-    const hero = document.getElementById('hero');
-    hero.style.background = `url('${BASE}hero.jpg?raw=true') center 30%/cover no-repeat`;
+/* ─── Scroll reveal ─── */
+const revObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revObserver.unobserve(e.target); }
   });
-}
-
-/* ─── scroll reveal ─── */
-const obs = new IntersectionObserver(es => {
-  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }});
 }, { threshold: .1 });
-document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+document.querySelectorAll('.reveal').forEach(el => revObserver.observe(el));
 
-/* ─── init ─── */
+/* ─── INIT ─── */
 setLang('ku');
 </script>
 </body>
